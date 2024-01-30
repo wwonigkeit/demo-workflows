@@ -10,8 +10,8 @@ functions:
 
   # This is a simple http-request container which executes HTTP(S) API calls
   - id: http-request
-    service: /services/http-request.yaml
-    type: knative-namespace
+    image: gcr.io/direktiv/functions/http-request:1.0
+    type: knative-workflow
  
 states:
   # Unpack the username header from the initial request 
@@ -54,15 +54,12 @@ states:
         scope: file
         as: decodePayload.py
       input: 
+        data:
+          commands:
+          - command: python3 decodePayload.py --header jq(.header) --payload jq(.payload)
         commands:
-        - command: pyenv local 3.8.13
-        - command: python3 decodePayload.py
-          envs:
-          - name: HEADER
-            value: jq(.header)
-          - name: PAYLOAD
-            value: jq(.payload)  
-    transform: 'jq( . + { header_payload: .return.python[1].result, payload_enc_pad: .return.python[2].result } | del (.return)  )'
+        - command: python3 decodePayload.py 
+    #transform: 'jq( . + { header_payload: .return.python[1].result, payload_enc_pad: .return.python[2].result } | del (.return)  )'
     catch:
     - error: "*"
       transition: exception-catch-handle
