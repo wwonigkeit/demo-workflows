@@ -1,0 +1,31 @@
+direktiv_api: workflow/v1
+
+description: Run a Docker Hub Python container without any changes
+
+functions:
+  # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
+  - id: python
+    service: /services/python.yaml
+    type: knative-namespace
+ 
+states:
+  # Let's only run a single state which get the python version and run a simple command
+  - id: run-python 
+    type: action
+    action:
+      function: python
+      input: 
+        data:
+          commands:
+          - command: python3 --version
+          - command: python3 -c "print('hello world')"
+  #   transform: 'jq( { version: .return[0].Output })'
+  #   transition: store-variable
+
+  # - id: store-variable
+  #   type: setter
+  #   variables:
+  #   - key: version
+  #     scope: workflow
+  #     mimeType: text/plain
+  #     value: 'jq(.version)'
