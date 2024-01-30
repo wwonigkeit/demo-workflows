@@ -9,27 +9,32 @@ functions:
     type: knative-namespace
  
 states:
-  - id: print-cmd
+  - id: print-region
     type: noop
-    log: 'Received this command: jq(.cmd)'
+    log: 'Received this region: jq(.region)'
     transition: run-python
 
   # Let's only run a single state which get the python version and run a simple command
   - id: run-python 
     type: action
     action:
+      secrets: ["AWS_KEY", "AWS_SECRET"]
       function: python
-      input: 
+      files: 
+      - key: /run-docker-container/code/get-aws.py
+        scope: file
+        as: get-aws.py
+      input:
         data:
           commands:
-          - command: python3 jq(.cmd)
-    transform: 'jq( { output: .return[0].Output })'
-    transition: store-variable
+          - command: python3 get-aws.py
+  #   transform: 'jq( { output: .return[0].Output })'
+  #   transition: store-variable
 
-  - id: store-variable
-    type: setter
-    variables:
-    - key: version
-      scope: workflow
-      mimeType: text/plain
-      value: 'jq(.output)'
+  # - id: store-variable
+  #   type: setter
+  #   variables:
+  #   - key: version
+  #     scope: workflow
+  #     mimeType: text/plain
+  #     value: 'jq(.output)'
