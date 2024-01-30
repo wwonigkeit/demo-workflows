@@ -9,6 +9,10 @@ functions:
     type: knative-namespace
  
 states:
+  - id: print-cmd
+    type: noop
+    log: 'Received this command: jq(.cmd)'
+
   # Let's only run a single state which get the python version and run a simple command
   - id: run-python 
     type: action
@@ -17,15 +21,14 @@ states:
       input: 
         data:
           commands:
-          - command: python3 --version
-          - command: python3 -c "print('hello world')"
-  #   transform: 'jq( { version: .return[0].Output })'
-  #   transition: store-variable
+          - command: python3 jq(.cmd)
+    transform: 'jq( { output: .return[0].Output })'
+    transition: store-variable
 
-  # - id: store-variable
-  #   type: setter
-  #   variables:
-  #   - key: version
-  #     scope: workflow
-  #     mimeType: text/plain
-  #     value: 'jq(.version)'
+  - id: store-variable
+    type: setter
+    variables:
+    - key: version
+      scope: workflow
+      mimeType: text/plain
+      value: 'jq(.output)'
