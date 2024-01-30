@@ -29,6 +29,11 @@ states:
           commands:
           - command: pip install boto3
           - command: python3 get-aws.py
+            envs: 
+            - name: AWS_KEY
+              value: jq(.secrets.AWS_KEY)
+            - name: AWS_SECRET
+              value: jq(.secrets.AWS_SECRET)
   #   transform: 'jq( { output: .return[0].Output })'
   #   transition: store-variable
 
