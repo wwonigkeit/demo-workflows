@@ -10,8 +10,8 @@ functions:
 
   # This is a simple http-request container which executes HTTP(S) API calls
   - id: http-request
-    image: gcr.io/direktiv/functions/http-request:1.0
-    type: knative-workflow
+    service: /run-docker-container/services/http-request.yaml
+    type: knative-namespace
  
 states:
   # Unpack the username header from the initial request 
