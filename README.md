@@ -20,8 +20,7 @@ There are 2 configuration directories in this repository:
 * run-docker-python-service-snippet.yaml: this will run a Docker container from hub.docker.com (specifically the Python container) as a knative-namespace service with a copde snippet:
 ```json
 {
-    "username": "s3-administartor",
-    "password": "Direktiv"
+    "username": "s3-administrator"
 }
 ```
 

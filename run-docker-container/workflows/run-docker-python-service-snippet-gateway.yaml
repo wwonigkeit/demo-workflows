@@ -15,11 +15,11 @@ functions:
  
 states:
   # Unpack the username header from the initial request 
-  # - id: decode-basic-auth
-  #   type: noop
-  #   log: 'jq("Decoding username and password for: " + .headers."Authorization"[0])'
-  #   transform: 'jq( . + (.headers."Authorization"[0] | split(" ") | .[1] | @base64d | split(":") | if .[1] != "" then { "username": .[0], "password": .[1] } else { "username": .[0], "password": "Direktiv" } end  ) )'
-  #   transition: authenticate-keycloak
+  - id: decode-basic-auth
+    type: noop
+    log: 'jq("Decoding username and password for: " + .headers."Authorization"[0])'
+    transform: 'jq( . + (.headers."Authorization"[0] | split(" ") | .[1] | @base64d | split(":") | if .[1] != "" then { "username": .[0], "password": .[1] } else { "username": .[0], "password": "Direktiv" } end  ) )'
+    transition: authenticate-keycloak
 
   # Get the JWT Token from Keycloak using the hux-username header and the static password (Unity Client doesn't have passwords)
   - id: authenticate-keycloak
