@@ -15,6 +15,7 @@ states:
   - id: run-terraform 
     type: action
     action:
+      secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: terraform
       files: 
       - key: /run-terraform-ansible-container/tf-scripts/provision-aws.tf
@@ -22,16 +23,23 @@ states:
         as: provision-aws.tf
       input:
         files:
-        - name: azure.env
-          data: |
-            ARM_SUBSCRIPTION_ID="<azure_subscription_id>"
-            ARM_TENANT_ID="<azure_subscription_tenant_id>"
-            ARM_CLIENT_ID="<service_principal_appid>"
-            ARM_CLIENT_SECRET="<service_principal_password>"
+        - name: aws.credentials.sh
+          mode: 0755
+          data: |-
+            export AWS_ACCESS_KEY_ID=jq(.secrets.AWS_ACCESS_KEY_ID)
+            export AWS_SECRET_ACCESS_KEY=jq(.secrets.AWS_SECRET_ACCESS_KEY)
         data:
           commands:
-          - command: cat azure.env
+          - command: ls -la
+          - command: cat aws.credentials.sh
           - command: cat provision-aws.tf
+          # - command: source aws.credentials.env
+          # - command: terraform init
+          # - command: terraform fmt provision-aws.tf
+          # - command: terraform validate provision-aws.tf
+          # - command: terraform apply provision-aws.tf
+          # - command: terraform state list
+          # Complete the above to export the state to a variable in Direktiv
   #   transform: 'jq( { version: .return[0].Output })'
   #   transition: store-variable
 
