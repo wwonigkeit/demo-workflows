@@ -1,0 +1,43 @@
+direktiv_api: workflow/v1
+
+description: Run a Docker Hub Terraform container without any changes
+
+functions:
+  # This is a simple Terraform container from hub.docker.com
+  - id: terraform
+    image: hashicorp/terraform:latest
+    type: knative-workflow
+    size: medium
+    cmd: /usr/share/direktiv/direktiv-cmd
+ 
+states:
+  # Let's only run a single state which executes the terraform commands
+  - id: run-terraform 
+    type: action
+    action:
+      function: terraform
+      files: 
+      - key: /run-terraform-ansible-container/an-playbooks/provision-aws.tf
+        scope: file
+        as: provision-aws.tf 
+      input:
+        files:
+        - name: azure.env
+          data: |
+            ARM_SUBSCRIPTION_ID="<azure_subscription_id>"
+            ARM_TENANT_ID="<azure_subscription_tenant_id>"
+            ARM_CLIENT_ID="<service_principal_appid>"
+            ARM_CLIENT_SECRET="<service_principal_password>"
+        data:
+          commands:
+          - command: cat azure.env
+  #   transform: 'jq( { version: .return[0].Output })'
+  #   transition: store-variable
+
+  # - id: store-variable
+  #   type: setter
+  #   variables:
+  #   - key: version
+  #     scope: workflow
+  #     mimeType: text/plain
+  #     value: 'jq(.version)'          

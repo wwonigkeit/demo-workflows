@@ -1,0 +1,33 @@
+direktiv_api: workflow/v1
+
+description: Run a Docker Hub Ansible container without any changes
+
+functions:
+  # This is a simple Terraform container from hub.docker.com
+  - id: ansible
+    image: alpinelinux/ansible
+    type: knative-workflow
+    size: medium
+    cmd: /usr/share/direktiv/direktiv-cmd
+ 
+states:
+  # Let's only run a single state which get the python version and run a simple command
+  - id: run-ansible 
+    type: action
+    action:
+      function: ansible
+      input: 
+        data:
+          commands:
+          - command: python3 --version
+          - command: python3 -c "print('hello world')"
+  #   transform: 'jq( { version: .return[0].Output })'
+  #   transition: store-variable
+
+  # - id: store-variable
+  #   type: setter
+  #   variables:
+  #   - key: version
+  #     scope: workflow
+  #     mimeType: text/plain
+  #     value: 'jq(.version)'
