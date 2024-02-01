@@ -50,8 +50,6 @@ states:
         data:
           commands:
           - command: python3 decodePayload.py --header jq(.header) --payload jq(.payload)
-        commands:
-        - command: python3 decodePayload.py 
     transform: 'jq( { jwt_attributes: (.return[0].Output | fromjson) }  )'
     catch:
     - error: "*"
