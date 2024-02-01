@@ -13,8 +13,9 @@ functions:
 states:
   - id: print-input
     type: noop
-    log: jq(.)
-    
+    log: jq(.body.data | @base64d)
+    transform: 'jq( { tfscript: .body.data | @base64d } )'
+
   # Let's only run a single state which executes the terraform commands
   - id: run-terraform 
     type: action
