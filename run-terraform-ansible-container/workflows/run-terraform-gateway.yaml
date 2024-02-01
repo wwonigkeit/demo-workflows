@@ -11,18 +11,14 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
-  - id: print-input
-    type: noop
-    log: jq(.body.data | @base64d)
-    transition: store-variable
-
-  - id: store-variable
+  - id: store-config
     type: setter
     variables:
     - key: provision-aws.tf
       scope: workflow
       mimeType: text/plain
-      value: 'jq( { tfscript: .body.data | @base64d } )'
+      value: 'jq( .body.data | @base64d )'
+    transition: run-terraform
 
   # Let's only run a single state which executes the terraform commands
   - id: run-terraform 
