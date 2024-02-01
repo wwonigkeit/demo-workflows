@@ -17,9 +17,9 @@ states:
     action:
       function: terraform
       files: 
-      - key: /run-terraform-ansible-container/an-playbooks/provision-aws.tf
+      - key: /run-terraform-ansible-container/tf-scripts/provision-aws.tf
         scope: file
-        as: provision-aws.tf 
+        as: provision-aws.tf
       input:
         files:
         - name: azure.env
@@ -31,6 +31,7 @@ states:
         data:
           commands:
           - command: cat azure.env
+          - command: cat provision-aws.tf
   #   transform: 'jq( { version: .return[0].Output })'
   #   transition: store-variable
 
