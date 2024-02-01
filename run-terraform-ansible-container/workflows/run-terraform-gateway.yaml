@@ -14,7 +14,15 @@ states:
   - id: print-input
     type: noop
     log: jq(.body.data | @base64d)
-    transform: 'jq( { tfscript: .body.data | @base64d } )'
+    transition: store-variable
+
+  - id: store-variable
+    type: setter
+    variables:
+    - key: provision-aws.tf
+      scope: workflow
+      mimeType: text/plain
+      value: 'jq( { tfscript: .body.data | @base64d } )'
 
   # Let's only run a single state which executes the terraform commands
   - id: run-terraform 
@@ -23,8 +31,8 @@ states:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: terraform
       files: 
-      - key: /run-terraform-ansible-container/tf-scripts/provision-aws.tf
-        scope: file
+      - key: provision-aws.tf
+        scope: workflow
         as: provision-aws.tf
       input:
         files:
