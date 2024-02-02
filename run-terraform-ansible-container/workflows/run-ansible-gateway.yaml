@@ -36,7 +36,15 @@ states:
         data:
           commands:
           - command: apk add --no-cache python3 py3-pip
+            suppress_output: true
+            suppress_command: true
           - command: pip3 install boto3 --break-system-packages
+            suppress_output: true
+            suppress_command: true
           - command: pip3 install ansible --break-system-packages
+            suppress_output: true
+            suppress_command: true
           - command: ansible-galaxy collection install amazon.aws
+            suppress_output: true
+            suppress_command: true
           - command: ansible-playbook provision-aws.yaml -vvv --extra-vars "aws_access_key=jq(.secrets.AWS_ACCESS_KEY_ID) aws_secret_key=jq(.secrets.AWS_SECRET_ACCESS_KEY) show_custom_stats=true stdout_callback=ansible.posix.json"
