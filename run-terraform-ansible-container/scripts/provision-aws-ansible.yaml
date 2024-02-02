@@ -7,8 +7,8 @@
 
   vars:
    key_name: "direktiv-key"
-   # aws_access_key: {{ ansible_env.AWS_ACCESS_KEY_ID}}
-   # aws_secret_key: {{ ansible_env.AWS_SECRET_ACCESS_KEY}}
+   aws_access_key: {{ ansible_env.AWS_ACCESS_KEY_ID}}
+   aws_secret_key: {{ ansible_env.AWS_SECRET_ACCESS_KEY}}
    vpc_subnet_id: "subnet-0f1d1224e0aae88d9"
    instance_type: "t2.micro"
    security_group_id: "sg-0abcc9883f0d02f90"
