@@ -5,9 +5,10 @@ description: Run a Docker Hub Ansible container without any changes
 functions:
   # This is a simple Ansible container from hub.docker.com
   - id: ansible
-    image: alpinelinux/ansible
+    #image: alpinelinux/ansible
+    image: alpine:latest
     type: knative-workflow
-    size: medium
+    size: large
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
@@ -22,26 +23,11 @@ states:
         scope: file
         as: provision-aws.yaml
       input:
-        files:
-        - name: aws.credentials.sh
-          mode: 0755
-          data: |-
-            export AWS_ACCESS_KEY_ID=jq(.secrets.AWS_ACCESS_KEY_ID)
-            export AWS_SECRET_ACCESS_KEY=jq(.secrets.AWS_SECRET_ACCESS_KEY)
         data:
           commands:
-          - command: ls -la
-          - command: cat aws.credentials.sh
-          - command: cat provision-aws.yaml
-          # - command: source aws.credentials.env
-          # - command: ansible-playbook provision-aws.yaml
-  #   transform: 'jq( { version: .return[0].Output })'
-  #   transition: store-variable
-
-  # - id: store-variable
-  #   type: setter
-  #   variables:
-  #   - key: version
-  #     scope: workflow
-  #     mimeType: text/plain
-  #     value: 'jq(.version)'          
+          - command: apk add --no-cache python3 py3-pip
+          - command: pip3 install boto3 --break-system-packages
+          - command: pip3 install ansible --break-system-packages
+          - command: ansible-galaxy collection install amazon.aws
+          - command: ansible-playbook provision-aws.yaml -vvv --extra-vars "aws_access_key=jq(.secrets.AWS_ACCESS_KEY_ID) aws_secret_key=jq(.secrets.AWS_SECRET_ACCESS_KEY) show_custom_stats=true stdout_callback=ansible.posix.json"
+         
