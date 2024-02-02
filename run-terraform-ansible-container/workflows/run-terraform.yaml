@@ -18,7 +18,7 @@ states:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: terraform
       files: 
-      - key: /run-terraform-ansible-container/tf-scripts/provision-aws.tf
+      - key: /run-terraform-ansible-container/scripts/provision-aws-terraform.tf
         scope: file
         as: provision-aws.tf
       input:

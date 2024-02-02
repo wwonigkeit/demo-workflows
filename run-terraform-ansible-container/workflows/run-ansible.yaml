@@ -3,7 +3,7 @@ direktiv_api: workflow/v1
 description: Run a Docker Hub Ansible container without any changes
 
 functions:
-  # This is a simple Terraform container from hub.docker.com
+  # This is a simple Ansible container from hub.docker.com
   - id: ansible
     image: alpinelinux/ansible
     type: knative-workflow
@@ -11,16 +11,30 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
-  # Let's only run a single state which get the python version and run a simple command
+ # Let's only run a single state which executes the ansible commands
   - id: run-ansible 
     type: action
     action:
+      secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: ansible
-      input: 
+      files: 
+      - key: /run-terraform-ansible-container/scripts/provision-aws-ansible.yaml
+        scope: file
+        as: provision-aws.yaml
+      input:
+        files:
+        - name: aws.credentials.sh
+          mode: 0755
+          data: |-
+            export AWS_ACCESS_KEY_ID=jq(.secrets.AWS_ACCESS_KEY_ID)
+            export AWS_SECRET_ACCESS_KEY=jq(.secrets.AWS_SECRET_ACCESS_KEY)
         data:
           commands:
-          - command: python3 --version
-          - command: python3 -c "print('hello world')"
+          - command: ls -la
+          - command: cat aws.credentials.sh
+          - command: cat provision-aws.yaml
+          # - command: source aws.credentials.env
+          # - command: ansible-playbook playbook.yaml
   #   transform: 'jq( { version: .return[0].Output })'
   #   transition: store-variable
 
@@ -30,4 +44,4 @@ states:
   #   - key: version
   #     scope: workflow
   #     mimeType: text/plain
-  #     value: 'jq(.version)'
+  #     value: 'jq(.version)'          
