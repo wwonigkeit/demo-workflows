@@ -34,7 +34,5 @@ states:
   - id: print-state
     type: getter
     variables:
-    - key: version
+    - key: terraform.tfstate
       scope: workflow
-      # mimeType: text/plain
-      value: terraform.tfstate
