@@ -3,11 +3,12 @@ direktiv_api: workflow/v1
 description: Run a Docker Hub Ansible container without any changes
 
 functions:
-  # This is a simple Terraform container from hub.docker.com
+  # This is a simple Ansible container from hub.docker.com
   - id: ansible
-    image: alpinelinux/ansible
+    #image: alpinelinux/ansible
+    image: alpine:latest
     type: knative-workflow
-    size: medium
+    size: large
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
