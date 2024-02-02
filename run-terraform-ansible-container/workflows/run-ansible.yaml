@@ -34,7 +34,7 @@ states:
           - command: cat aws.credentials.sh
           - command: cat provision-aws.yaml
           # - command: source aws.credentials.env
-          # - command: ansible-playbook playbook.yaml
+          # - command: ansible-playbook provision-aws.yaml
   #   transform: 'jq( { version: .return[0].Output })'
   #   transition: store-variable
 
