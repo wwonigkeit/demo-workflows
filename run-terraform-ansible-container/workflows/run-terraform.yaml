@@ -22,23 +22,13 @@ states:
         scope: file
         as: provision-aws.tf
       input:
-        files:
-        - name: aws.credentials.sh
-          mode: 0755
-          data: |-
-            export AWS_ACCESS_KEY_ID=jq(.secrets.AWS_ACCESS_KEY_ID)
-            export AWS_SECRET_ACCESS_KEY=jq(.secrets.AWS_SECRET_ACCESS_KEY)
         data:
           commands:
-          - command: ls -la
-          - command: cat aws.credentials.sh
-          - command: cat provision-aws.tf
           # - command: source aws.credentials.env
-          # - command: terraform init
-          # - command: terraform fmt provision-aws.tf
-          # - command: terraform validate provision-aws.tf
-          # - command: terraform apply provision-aws.tf
-          # - command: terraform state list
+          - command: terraform init
+          - command: terraform plan
+          - command: terraform apply -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="jq(.secrets.AWS_SECRET_ACCESS_KEY)"
+          - command: terraform state list
           # Complete the above to export the state to a variable in Direktiv
   #   transform: 'jq( { version: .return[0].Output })'
   #   transition: store-variable
