@@ -23,4 +23,4 @@ plugins:
   #           input["Body"] = JSON.stringify(b["jwt_attributes"])
 methods:
   - POST
-timeout: 5  
+timeout: 180
