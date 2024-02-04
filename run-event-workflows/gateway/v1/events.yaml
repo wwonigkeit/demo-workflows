@@ -1,0 +1,31 @@
+direktiv_api: endpoint/v1
+allow_anonymous: true
+path: /v1/event
+plugins:
+  target:
+    type: "target-event"
+    configuration:
+      namespace: "demo-workflows"
+  inbound:
+    - type: "event-filter"
+      configuration:
+        script: |-
+            // Make modifications to AWS events to fitler only needed events
+            if ((event["source"] == "aws.ec2") && (event["type"] == "AWS API Call via CloudTrail")) {
+                
+                // This is an AWS CloudTrail event
+                event["type"] = "aws.api.cloudtrail" // rename the AWS event to something more readable
+
+                // So we didn't find the TerminateInstances event, but we want to see all the other events 
+                event["eventName"] = event["data"].detail.eventName
+                return event
+            } else {
+            
+                nslog("Drop the event - no matches: " + event["type"])
+                return null
+
+            }
+        allow_non_events: false
+methods:
+  - POST
+timeout: 5
