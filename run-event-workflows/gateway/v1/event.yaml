@@ -7,25 +7,25 @@ plugins:
     configuration:
       namespace: "demo-workflows"
   inbound:
-    # - type: "event-filter"
-    #   configuration:
-    #     script: |-
-    #         // Make modifications to AWS events to fitler only needed events
-    #         if ((input["source"] == "aws.ec2") && (input["type"] == "AWS API Call via CloudTrail")) {
+    - type: "event-filter"
+      configuration:
+        script: |-
+            // Make modifications to AWS events to fitler only needed events
+            if ((event["source"] == "aws.ec2") && (event["type"] == "AWS API Call via CloudTrail")) {
                 
-    #             // This is an AWS CloudTrail event
-    #             input["type"] = "aws.api.cloudtrail" // rename the AWS event to something more readable
+                // This is an AWS CloudTrail event
+                event["type"] = "aws.api.cloudtrail" // rename the AWS event to something more readable
 
-    #             // So we didn't find the TerminateInstances event, but we want to see all the other events 
-    #             input["eventName"] = input["data"].detail.eventName
-    #             return input
-    #         } else {
+                // So we didn't find the TerminateInstances event, but we want to see all the other events 
+                event["eventName"] = event["data"].detail.eventName
+                return event
+            } else {
             
-    #             // Drop the event - no matches
-    #             return null
+                // Drop the event - no matches
+                return null
 
-    #         }
-    #     allow_non_events: false
+            }
+        allow_non_events: false
     - type: "acl"
       configuration:
         allow_groups:
@@ -35,8 +35,8 @@ plugins:
   auth:
     - type: "key-auth"
       configuration:
-        add_username_header: false
-        add_tags_header: false
+        add_username_header: true
+        add_tags_header: true
         add_groups_header: false
         key_name: "Aws-Authentication-Header"
 methods:
