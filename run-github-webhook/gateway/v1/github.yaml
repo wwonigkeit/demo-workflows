@@ -3,7 +3,7 @@ allow_anonymous: true
 path: /v1/github
 plugins:
   target:
-    type: "target-event"
+    type: target-flow
     configuration:
       namespace: demo-workflows
       flow: /run-github-webhook/workflows/run-github-webhook.yaml
