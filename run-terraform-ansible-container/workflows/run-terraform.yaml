@@ -36,3 +36,4 @@ states:
     variables:
     - key: terraform.tfstate
       scope: workflow
+    transform: 'jq(.var)'
