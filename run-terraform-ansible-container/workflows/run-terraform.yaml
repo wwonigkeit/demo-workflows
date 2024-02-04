@@ -24,7 +24,6 @@ states:
       input:
         data:
           commands:
-          # - command: source aws.credentials.env
           - command: terraform init
           - command: terraform plan -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: terraform apply -auto-approve -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"

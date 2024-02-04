@@ -21,7 +21,9 @@
       name: "Test-Ansible"
       key_name: "{{ key_name }}"
       aws_access_key: "{{ aws_access_key }}"
+      # {{ lookup('env','AWS_ACCESS_KEY_ID') }}
       aws_secret_key: "{{ aws_secret_key }}"
+      # {{ lookup('env','AWS_SECRET_ACCESS_KEY') }}
       vpc_subnet_id: "{{ vpc_subnet_id }}"
       instance_type: "{{ instance_type }}"
       security_group: "{{ security_group_id  }}"

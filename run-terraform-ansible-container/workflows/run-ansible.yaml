@@ -30,4 +30,11 @@ states:
           - command: pip3 install ansible --break-system-packages
           - command: ansible-galaxy collection install amazon.aws
           - command: ansible-playbook provision-aws.yaml -vvv --extra-vars "aws_access_key=jq(.secrets.AWS_ACCESS_KEY_ID) aws_secret_key=jq(.secrets.AWS_SECRET_ACCESS_KEY) show_custom_stats=true stdout_callback=ansible.posix.json"
+          # The next release of the direktiv-cmd function will allow environmental variables to be passed (example below)
+          # - command: ansible-playbook provision-aws.yaml -vvv show_custom_stats=true stdout_callback=ansible.posix.json"
+          #   envs: 
+          #   - name: AWS_ACCESS_KEY_ID
+          #     value: jq(.secrets.AWS_KEY)
+          #   - name: AWS_SECRET_ACCESS_KEY
+          #     value: jq(.secrets.AWS_SECRET)
          
