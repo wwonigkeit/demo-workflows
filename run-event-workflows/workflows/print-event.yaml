@@ -1,16 +1,18 @@
 direktiv_api: workflow/v1
 
-description: Execute an AWS CLI commmand based on an event coming in from AWS EventBridge
+description: Print the event call from AWS EventBridge
 
 #
 # The start definition which starts the worklfow based on the event received from the
-# vault workflow. Example of the event is shown above in the description
+# AWS EventBridge configuration. Only start when we receive a "running" state
 #
-# start:
-#   type: event
-#   state: check-event
-#   event: 
-#     type: "AWS API Call via CloudTrail"
+start:
+  type: event
+  state: check-event
+  event:
+    type: "ec2_instance_state-change_notification"
+    context:
+      state: "running"
 
 functions:
   # This is a simple aws-cli container from hub.docker.com
@@ -34,7 +36,7 @@ states:
             suppress_command: true
           - command: aws configure set aws_secret_access_key jq(.secrets.AWS_SECRET_ACCESS_KEY)
             suppress_command: true
-          - command: aws configure set region ap-southeast-2
+          - command: aws configure set region jq(."ec2_instance_state-change_notification".data.region)
             suppress_command: true
-          - command: aws ec2 describe-instances
+          - command: aws ec2 describe-instances --instance-ids jq(."ec2_instance_state-change_notification".data.detail."instance-id")
     transform: 'jq( { instances: ( ( .return[3].Output | fromjson ) | .Reservations ) } )'          
