@@ -38,7 +38,7 @@ plugins:
         add_username_header: false
         add_tags_header: false
         add_groups_header: false
-        key_name: "aws-api-key"
+        key_name: "Aws-Authentication-Header"
 methods:
   - POST
 timeout: 5
