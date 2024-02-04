@@ -26,6 +26,19 @@ plugins:
 
             }
         allow_non_events: false
+    - type: "acl"
+      configuration:
+        allow_groups:
+          - "aws-events"
+        allow_tags:
+          - "aws-events-ap-southeast-2"
+  auth:
+    - type: "key-auth"
+      configuration:
+        add_username_header: false
+        add_tags_header: false
+        add_groups_header: false
+        key_name: "aws-api-key"
 methods:
   - POST
 timeout: 5

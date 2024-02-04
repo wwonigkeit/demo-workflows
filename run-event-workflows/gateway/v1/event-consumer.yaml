@@ -1,2 +1,6 @@
 direktiv_api: "consumer/v1"
-api_key: "apikey123"
+api_key: "aws-api-key"
+groups:
+  - "aws-events"
+tags:
+  - "aws-events-ap-southeast-2"
