@@ -7,7 +7,8 @@ description: Print the event call from AWS EventBridge
 # AWS EventBridge configuration. Only start when we receive a "running" state
 #
 start:
-  type: eventsXor
+  # type: eventsXor
+  type: event
   state: get-ec2-instance
   event:
     type: "ec2_instance_state-change_notification"
