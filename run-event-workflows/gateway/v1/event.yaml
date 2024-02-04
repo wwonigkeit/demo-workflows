@@ -14,7 +14,7 @@ plugins:
             if (event["source"] == "aws.ec2") {
                 
                 // This is an AWS CloudTrail event
-                eventType = event["type"].toLowerCase().replace(/ /g,"_") // rename the AWS event to something more readable
+                eventType = event["type"].toLowerCase()// .replace(/ /g,"_") // rename the AWS event to something more readable
                 event["type"] = eventType
 
                 if (eventType == ec2_instance_state-change_notification) {
