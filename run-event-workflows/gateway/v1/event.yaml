@@ -11,10 +11,11 @@ plugins:
       configuration:
         script: |-
             // Make modifications to AWS events to fitler only needed events
-            if ((event["source"] == "aws.ec2") && (event["type"] == "AWS API Call via CloudTrail")) {
+            if ((event["source"] == "aws.ec2") {
                 
                 // This is an AWS CloudTrail event
-                event["type"] = "aws.api.cloudtrail" // rename the AWS event to something more readable
+                eventType = event["type"].toLowerCase().replace(/ /g,"_") // rename the AWS event to something more readable
+                event["type"] = eventType
 
                 // So we didn't find the TerminateInstances event, but we want to see all the other events 
                 event["eventName"] = event["data"].detail.eventName
