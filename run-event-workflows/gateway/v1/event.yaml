@@ -18,9 +18,9 @@ plugins:
                 eventType = event["type"].toLowerCase().replace(/ /g,"_")
                 event["type"] = eventType
 
-                // if (eventType == "ec2_instance_state-change_notification") {
-                //  event["state"] = event["data"].detail.state
-                // }
+                if (eventType == "ec2_instance_state-change_notification") {
+                  event["state"] = event["data"].detail.state
+                }
                 return event
             } else {
             
