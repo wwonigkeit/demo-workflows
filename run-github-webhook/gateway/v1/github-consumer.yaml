@@ -1,0 +1,6 @@
+direktiv_api: "consumer/v1"
+username: "demo"
+password: "mypassword"
+api_key: "lQ6CAEO9PbdYEoZaxH9FV9GxvxFCeaKr6tsSTQU4wHuYYLI7X4FAeAtHOCz"
+groups:
+  - "github-webhooks"
