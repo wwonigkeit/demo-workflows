@@ -1,4 +1,6 @@
 direktiv_api: "consumer/v1"
+username: "demo"
+password: "mypassword"
 api_key: "aws-api-key"
 groups:
   - "aws-events"
