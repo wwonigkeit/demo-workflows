@@ -1,0 +1,71 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFormation template for EventBridge rule 'direktiv-cloudevents'",
+  "Resources": {
+    "Rule0Connection0": {
+      "Type": "AWS::Events::Connection",
+      "Properties": {
+        "AuthorizationType": "API_KEY",
+        "AuthParameters": {
+          "ApiKeyAuthParameters": {
+            "ApiKeyName": "Aws-Authentication-Header",
+            "ApiKeyValue": {
+              "Ref": "Rule0Connection0ApiKeyValue"
+            }
+          }
+        },
+        "Name": "direktiv-internal"
+      }
+    },
+    "Rule0ApiDestination0": {
+      "Type": "AWS::Events::ApiDestination",
+      "Properties": {
+        "ConnectionArn": {
+          "Fn::GetAtt": ["Rule0Connection0", "Arn"]
+        },
+        "HttpMethod": "POST",
+        "InvocationEndpoint": "https://internal.direktiv.io/ns/demo-workflows/v1/event",
+        "InvocationRateLimitPerSecond": 300,
+        "Name": "direktiv-internal"
+      }
+    },
+    "EventRule0": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "EventBusName": "default",
+        "EventPattern": {
+          "source": ["aws.ec2"]
+        },
+        "Name": "direktiv-cloudevents",
+        "State": "ENABLED",
+        "Targets": [{
+          "Id": "Idd0d3b6a8-5d86-4841-80e0-7097ab49131c",
+          "Arn": {
+            "Fn::GetAtt": ["Rule0ApiDestination0", "Arn"]
+          },
+          "RoleArn": "arn:aws:iam::650857652946:role/service-role/Amazon_EventBridge_Invoke_Api_Destination_2036934400",
+          "InputTransformer": {
+            "InputPathsMap": {
+              "id": "$.id",
+              "source": "$.source",
+              "state": "$.detail.StatusCode",
+              "subject": "$.source",
+              "time": "$.time",
+              "type": "$.detail-type"
+            },
+            "InputTemplate": " {\n   \"specversion\": \"1.0\",\n   \"id\": <id>, \n   \"source\": <source>,\n   \"type\": <type>,\n   \"subject\": <subject>,\n   \"time\": <time>,\n   \"data\": <aws.events.event.json>\n }"
+          }
+        }]
+      }
+    }
+  },
+  "Parameters": {
+    "Rule0Connection0ApiKeyValue": {
+      "Type": "String",
+      "NoEcho": true,
+      "MinLength": "1",
+      "MaxLength": "512",
+      "AllowedPattern": "^[ \\t]*[^\\x00-\\x1F:\\x7F]+([ \\t]+[^\\x00-\\x1F:\\x7F]+)*[ \\t]*$"
+    }
+  }
+}
