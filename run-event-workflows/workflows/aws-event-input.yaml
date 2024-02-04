@@ -9,10 +9,13 @@ description: Print the event call from AWS EventBridge
 start:
   type: event
   state: get-ec2-instance
-  event:
-    type: "ec2_instance_state-change_notification"
+  events:
+  - type: "ec2_instance_state-change_notification"
     context:
       state: "running"
+  - type: "ec2_instance_state-change_notification"
+    context:
+      state: "stopped"
 
 functions:
   # This is a simple aws-cli container from hub.docker.com
