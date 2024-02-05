@@ -6,6 +6,22 @@ plugins:
     type: "target-event"
     configuration:
       namespace: "demo-workflows"
+  inbound:
+    - type: "js-inbound"
+      configuration:
+        script: |-
+            b = JSON.parse(input["Body"])
+            input["specversion"] = "1.0"
+            input["id"] = input["headers"]."X-Github-Delivery"
+            input["source"] = input["body"].repository.git_url
+            input["type"] = input["headers"]."X-Github-Event"
+            input["subject"] = input["headers"]."X-Github-Event"
+            input["data"] = input
+            delete input.body;
+            delete input.consumer;
+            delete input.headers;
+            delete input.query_params;
+            delete input.url_params;
 methods:
   - POST
 timeout: 10
