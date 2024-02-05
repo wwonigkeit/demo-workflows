@@ -24,10 +24,16 @@ plugins:
             delete input.headers;
             delete input.query_params;
             delete input.url_params;
+  # target:
+  #   type: "target-event"
+  #   configuration:
+  #     namespace: "demo-workflows"
   target:
-    type: "target-event"
+    type: "target-flow"
     configuration:
       namespace: "demo-workflows"
+      flow: "/run-github-webhook/workflows/run-github-webhook.yaml"
+      content_type: "application/json"      
 methods:
   - POST
 timeout: 10
