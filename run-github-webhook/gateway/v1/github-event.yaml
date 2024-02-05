@@ -3,28 +3,38 @@ allow_anonymous: true
 path: /v1/github-event
 plugins:
   inbound:
-    - type: "request-convert"
+    - type: js-inbound
+      configuration:
+        script: |
+            input["Headers"].Add("command", "put")
+    - type: request-convert
       configuration:
         omit_headers: false
         omit_queries: false
         omit_body: false
-        omit_consumer: false  
-    - type: "js-inbound"
-      configuration:
-        script: |-
-            // b = JSON.parse(input["body"])
-            // input["specversion"] = "1.0"
-            // input["id"] = input.headers //["X-Github-Delivery"][0]
-            // input["source"] = input.body.repository.git_url
-            // input["type"] = input.headers //.X-Github-Event
-            // input["subject"] = input.headers //.X-Github-Event
-            // input["data"] = input
-            delete input.body;
-            //delete input.consumer;
-            //delete input.headers;
-            //delete input.query_params;
-            //delete input.url_params;
-            return input;
+        omit_consumer: false     
+    # - type: "request-convert"
+    #   configuration:
+    #     omit_headers: false
+    #     omit_queries: false
+    #     omit_body: false
+    #     omit_consumer: false  
+    # - type: "js-inbound"
+    #   configuration:
+    #     script: |-
+    #         // b = JSON.parse(input["body"])
+    #         // input["specversion"] = "1.0"
+    #         // input["id"] = input.headers //["X-Github-Delivery"][0]
+    #         // input["source"] = input.body.repository.git_url
+    #         // input["type"] = input.headers //.X-Github-Event
+    #         // input["subject"] = input.headers //.X-Github-Event
+    #         // input["data"] = input
+    #         delete input.body;
+    #         //delete input.consumer;
+    #         //delete input.headers;
+    #         //delete input.query_params;
+    #         //delete input.url_params;
+    #         return input;
   # target:
   #   type: "target-event"
   #   configuration:
