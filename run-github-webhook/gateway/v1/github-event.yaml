@@ -12,7 +12,7 @@ plugins:
         script: |-
             b = JSON.parse(input["Body"])
             input["specversion"] = "1.0"
-            input["id"] = input["headers"].X-Github-Delivery
+            input["id"] = input["headers"]["X-Github-Delivery"]
             input["source"] = input["body"].repository.git_url
             input["type"] = input["headers"].X-Github-Event
             input["subject"] = input["headers"].X-Github-Event
