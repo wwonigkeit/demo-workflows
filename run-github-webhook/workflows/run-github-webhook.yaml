@@ -3,7 +3,7 @@ direktiv_api: workflow/v1
 description: Execute an orchestration policy based on the GitHub webhook
  
 states:
-  # Store in the incoming playbook as a variable to use in subsequent states
+  # Store in the incoming playbook as a variable to use in subsequent state
   - id: print-incoming
     type: noop
     log: jq(.)
