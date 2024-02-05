@@ -24,6 +24,7 @@ plugins:
             delete input.headers;
             delete input.query_params;
             delete input.url_params;
+            return input
   # target:
   #   type: "target-event"
   #   configuration:
