@@ -1,11 +1,11 @@
 {
-    "after": "d7b1c0c7c8a7ad5643c3062558c4775985193553",
+    "after": "be14af920746c283672e16bedd0b0421215ce9a2",
     "base_ref": null,
-    "before": "36bd3974e04751641e74ce33cc8de71795911395",
+    "before": "622c3ef15dcd70766a91c3e0c5d43af7c8fb87a3",
     "commits": [
         {
             "added": [
-                "test-consumer.yaml"
+                "run-github-webhook/code/payload.json"
             ],
             "author": {
                 "email": "wilhelm.wonigkeit@direktiv.io",
@@ -18,24 +18,24 @@
                 "username": "wwonigkeit"
             },
             "distinct": true,
-            "id": "d7b1c0c7c8a7ad5643c3062558c4775985193553",
-            "message": "Updated",
+            "id": "be14af920746c283672e16bedd0b0421215ce9a2",
+            "message": "Testing hash",
             "modified": [
-                "run-github-webhook/gateway/v1/github-event.yaml"
+                "run-github-webhook/code/decodeSignature.go"
             ],
             "removed": [],
-            "timestamp": "2024-02-06T09:30:38-08:00",
-            "tree_id": "9c7f51cffe3f41f3746e1f2c36a03524681dae87",
-            "url": "https://github.com/wwonigkeit/demo-workflows/commit/d7b1c0c7c8a7ad5643c3062558c4775985193553"
+            "timestamp": "2024-02-06T10:54:44-08:00",
+            "tree_id": "a67ee9bce45048b8389978890bff8d1f61b8f8ad",
+            "url": "https://github.com/wwonigkeit/demo-workflows/commit/be14af920746c283672e16bedd0b0421215ce9a2"
         }
     ],
-    "compare": "https://github.com/wwonigkeit/demo-workflows/compare/36bd3974e047...d7b1c0c7c8a7",
+    "compare": "https://github.com/wwonigkeit/demo-workflows/compare/622c3ef15dcd...be14af920746",
     "created": false,
     "deleted": false,
     "forced": false,
     "head_commit": {
         "added": [
-            "test-consumer.yaml"
+            "run-github-webhook/code/payload.json"
         ],
         "author": {
             "email": "wilhelm.wonigkeit@direktiv.io",
@@ -48,15 +48,15 @@
             "username": "wwonigkeit"
         },
         "distinct": true,
-        "id": "d7b1c0c7c8a7ad5643c3062558c4775985193553",
-        "message": "Updated",
+        "id": "be14af920746c283672e16bedd0b0421215ce9a2",
+        "message": "Testing hash",
         "modified": [
-            "run-github-webhook/gateway/v1/github-event.yaml"
+            "run-github-webhook/code/decodeSignature.go"
         ],
         "removed": [],
-        "timestamp": "2024-02-06T09:30:38-08:00",
-        "tree_id": "9c7f51cffe3f41f3746e1f2c36a03524681dae87",
-        "url": "https://github.com/wwonigkeit/demo-workflows/commit/d7b1c0c7c8a7ad5643c3062558c4775985193553"
+        "timestamp": "2024-02-06T10:54:44-08:00",
+        "tree_id": "a67ee9bce45048b8389978890bff8d1f61b8f8ad",
+        "url": "https://github.com/wwonigkeit/demo-workflows/commit/be14af920746c283672e16bedd0b0421215ce9a2"
     },
     "pusher": {
         "email": "wwonigkeit@users.noreply.github.com",
@@ -145,9 +145,9 @@
         },
         "private": true,
         "pulls_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/pulls{/number}",
-        "pushed_at": 1707240640,
+        "pushed_at": 1707245686,
         "releases_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/releases{/id}",
-        "size": 56,
+        "size": 57,
         "ssh_url": "git@github.com:wwonigkeit/demo-workflows.git",
         "stargazers": 0,
         "stargazers_count": 0,
