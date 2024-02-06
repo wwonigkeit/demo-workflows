@@ -1,12 +1,10 @@
 {
-    "after": "be14af920746c283672e16bedd0b0421215ce9a2",
+    "after": "1b7d68b7f10aa39faa5b25a6e71bd47fd5eb77ba",
     "base_ref": null,
-    "before": "622c3ef15dcd70766a91c3e0c5d43af7c8fb87a3",
+    "before": "be14af920746c283672e16bedd0b0421215ce9a2",
     "commits": [
         {
-            "added": [
-                "run-github-webhook/code/payload.json"
-            ],
+            "added": [],
             "author": {
                 "email": "wilhelm.wonigkeit@direktiv.io",
                 "name": "Wilhelm Wonigkeit",
@@ -18,25 +16,23 @@
                 "username": "wwonigkeit"
             },
             "distinct": true,
-            "id": "be14af920746c283672e16bedd0b0421215ce9a2",
+            "id": "1b7d68b7f10aa39faa5b25a6e71bd47fd5eb77ba",
             "message": "Testing hash",
             "modified": [
-                "run-github-webhook/code/decodeSignature.go"
+                "run-github-webhook/code/payload.json"
             ],
             "removed": [],
-            "timestamp": "2024-02-06T10:54:44-08:00",
-            "tree_id": "a67ee9bce45048b8389978890bff8d1f61b8f8ad",
-            "url": "https://github.com/wwonigkeit/demo-workflows/commit/be14af920746c283672e16bedd0b0421215ce9a2"
+            "timestamp": "2024-02-06T10:57:33-08:00",
+            "tree_id": "c26522931162076cbb978469c7f38abce630bd99",
+            "url": "https://github.com/wwonigkeit/demo-workflows/commit/1b7d68b7f10aa39faa5b25a6e71bd47fd5eb77ba"
         }
     ],
-    "compare": "https://github.com/wwonigkeit/demo-workflows/compare/622c3ef15dcd...be14af920746",
+    "compare": "https://github.com/wwonigkeit/demo-workflows/compare/be14af920746...1b7d68b7f10a",
     "created": false,
     "deleted": false,
     "forced": false,
     "head_commit": {
-        "added": [
-            "run-github-webhook/code/payload.json"
-        ],
+        "added": [],
         "author": {
             "email": "wilhelm.wonigkeit@direktiv.io",
             "name": "Wilhelm Wonigkeit",
@@ -48,15 +44,15 @@
             "username": "wwonigkeit"
         },
         "distinct": true,
-        "id": "be14af920746c283672e16bedd0b0421215ce9a2",
+        "id": "1b7d68b7f10aa39faa5b25a6e71bd47fd5eb77ba",
         "message": "Testing hash",
         "modified": [
-            "run-github-webhook/code/decodeSignature.go"
+            "run-github-webhook/code/payload.json"
         ],
         "removed": [],
-        "timestamp": "2024-02-06T10:54:44-08:00",
-        "tree_id": "a67ee9bce45048b8389978890bff8d1f61b8f8ad",
-        "url": "https://github.com/wwonigkeit/demo-workflows/commit/be14af920746c283672e16bedd0b0421215ce9a2"
+        "timestamp": "2024-02-06T10:57:33-08:00",
+        "tree_id": "c26522931162076cbb978469c7f38abce630bd99",
+        "url": "https://github.com/wwonigkeit/demo-workflows/commit/1b7d68b7f10aa39faa5b25a6e71bd47fd5eb77ba"
     },
     "pusher": {
         "email": "wwonigkeit@users.noreply.github.com",
@@ -109,7 +105,7 @@
         "issues_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/issues{/number}",
         "keys_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/keys{/key_id}",
         "labels_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/labels{/name}",
-        "language": "Python",
+        "language": "Go",
         "languages_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/languages",
         "license": null,
         "master_branch": "main",
@@ -145,7 +141,7 @@
         },
         "private": true,
         "pulls_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/pulls{/number}",
-        "pushed_at": 1707245686,
+        "pushed_at": 1707245856,
         "releases_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/releases{/id}",
         "size": 57,
         "ssh_url": "git@github.com:wwonigkeit/demo-workflows.git",
@@ -160,7 +156,7 @@
         "teams_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/teams",
         "topics": [],
         "trees_url": "https://api.github.com/repos/wwonigkeit/demo-workflows/git/trees{/sha}",
-        "updated_at": "2024-01-30T23:07:03Z",
+        "updated_at": "2024-02-06T18:54:50Z",
         "url": "https://github.com/wwonigkeit/demo-workflows",
         "visibility": "private",
         "watchers": 0,

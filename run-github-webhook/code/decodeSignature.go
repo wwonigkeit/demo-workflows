@@ -1,53 +1,119 @@
 package main
 
 import (
+	"context"
 	"crypto/hmac"
-	"crypto/sha1"
-	"flag"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
+	"os/signal"
+	"strings"
+	"syscall"
+	"time"
 )
 
-// IsValidPayload checks if the github payload's hash fits with
-// the hash computed by GitHub sent as a header
-func IsValidPayload(secret, headerHash string, payload []byte) bool {
-	hash := HashPayload(secret, payload)
-	return hmac.Equal(
-		[]byte(hash),
-		[]byte(headerHash),
-	)
+const (
+	DirektivActionIDHeader     = "Direktiv-ActionID"
+	DirektivErrorCodeHeader    = "Direktiv-ErrorCode"
+	DirektivErrorMessageHeader = "Direktiv-ErrorMessage"
+)
+
+const code = "io.direktiv.github.validator-%s.error"
+
+func main() {
+
+	mux := http.NewServeMux()
+	fmt.Printf("Starting validator server listening on :8080\n")
+	mux.HandleFunc("/", WebhookHandler)
+
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
+	fmt.Printf("Listening on :8080\n")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGTERM)
+
+	go func() {
+		<-sigs
+		shutdown(srv)
+	}()
+
+	srv.ListenAndServe()
 }
 
-// HashPayload computes the hash of payload's body according to the webhook's secret token
-// see https://developer.github.com/webhooks/securing/#validating-payloads-from-github
-// returning the hash as a hexadecimal string
-func HashPayload(secret string, playloadBody []byte) string {
-	hm := hmac.New(sha1.New, []byte(secret))
-	hm.Write(playloadBody)
-	sum := hm.Sum(nil)
-	return fmt.Sprintf("%x", sum)
-}
+// WebhookHandler handles GitHub webhook requests
+func WebhookHandler(w http.ResponseWriter, r *http.Request) {
+	aid := r.Header.Get(DirektivActionIDHeader)
+	log(aid, "Received webhook request for validation")
 
-func check(e error) {
-	if e != nil {
-		panic(e)
+	if r.Method != http.MethodPost {
+		respondWithErr(w, fmt.Sprintf(code, "methoderr"), "Method Not Allowed")
+		return
+	}
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		respondWithErr(w, fmt.Sprintf(code, "bodyerr"), err.Error())
+		return
+	}
+
+	signatureHeader := r.Header.Get("X-Hub-Signature-256")
+	if ValidateSignature(w, body, signatureHeader) {
+		log(aid, "Payload Validated")
+		marshalBytes := []byte(`{"result": "Payload Validated"}`)
+		respond(w, marshalBytes)
+	} else {
+		log(aid, "Unauthorized - Signature Mismatch")
+		respondWithErr(w, fmt.Sprintf(code, "invalidsiganture"), "Unauthorized - Signature Mismatch")
 	}
 }
 
-func main() {
-	secretPtr := flag.String("secret", "secret", "GitHub shared secret")
-	headerPtr := flag.String("header", "header", "GitHub header hash")
-	payloadPtr := flag.String("payload", "payload", "GitHub webhook payload as a JSON file path i.e. dir/payload.json")
+// ValidateSignature validates the GitHub webhook signature
+func ValidateSignature(w http.ResponseWriter, body []byte, signatureHeader string) bool {
+	if signatureHeader == "" || len(signatureHeader) < 7 {
+		respondWithErr(w, fmt.Sprintf(code, "invalidheader"), "Invalid signature header")
+		return false
+	}
 
-	flag.Parse()
+	fmt.Println("Validating signature...")
 
-	dat, err := os.ReadFile(*payloadPtr)
-	check(err)
-	// fmt.Print(string(dat))
+	// secret := os.Getenv("WEBHOOK_SECRET")
+	secret := "api123"
 
-	fmt.Println("Valid:", IsValidPayload(*secretPtr, *headerPtr, dat))
-	fmt.Println("HashPayload:", HashPayload(*secretPtr, dat))
-	//fmt.Println("IsValidPayload:", *secretPtr, *headerPtr, *payloadPtr)
-	//fmt.Println("HashPayload:", *secretPtr, *payloadPtr)
+	computedHash := hmac.New(sha256.New, []byte(secret))
+	computedHash.Write(body)
+	expectedSig := hex.EncodeToString(computedHash.Sum(nil))
 
+	return hmac.Equal([]byte(expectedSig), []byte(signatureHeader[7:]))
+}
+
+func shutdown(srv *http.Server) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	srv.Shutdown(ctx)
+}
+
+func log(aid, l string) {
+	if aid == "development" || aid == "Development" {
+		fmt.Println(l)
+	} else {
+		http.Post(fmt.Sprintf("http://localhost:8889/log?aid=%s", aid), "plain/text", strings.NewReader(l))
+	}
+}
+
+func respond(w http.ResponseWriter, data []byte) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(data)
+}
+
+func respondWithErr(w http.ResponseWriter, code, err string) {
+	w.Header().Set(DirektivErrorCodeHeader, code)
+	w.Header().Set(DirektivErrorMessageHeader, err)
+	w.WriteHeader(http.StatusInternalServerError)
+	w.Write([]byte(err))
 }
