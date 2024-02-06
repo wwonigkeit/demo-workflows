@@ -6,7 +6,14 @@ plugins:
     - type: js-inbound
       configuration:
         script: |
-            input["Headers"].Add("command", "put")
+          input["Headers"].Delete("Content-Type");
+          input["Headers"].Add("Content-Type","application/cloudevents+json; charset=utf-8");
+          b = JSON.parse(input["Body"]);
+          var bnew_body = new Object()
+          bnew_body["specversion"] = "1.0";
+          bnew_body["id"] = input.Headers["X-Github-Delivery"];
+          bnew_body["data"] = b
+          input["Body"] = JSON.stringify(bnew_body)
     - type: request-convert
       configuration:
         omit_headers: false
