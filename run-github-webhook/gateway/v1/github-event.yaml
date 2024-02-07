@@ -1,57 +1,73 @@
 direktiv_api: endpoint/v1
+# allow_anonymous: true
+# path: /v1/github-event
+# plugins:
+#   inbound:
+#     - type: js-inbound
+#       configuration:
+#         script: |
+#           input["Headers"].Delete("Content-Type");
+#           input["Headers"].Add("Content-Type","application/cloudevents+json; charset=utf-8");
+#           b = JSON.parse(input["Body"]);
+#           var bnew_body = new Object()
+#           bnew_body["specversion"] = "1.0";
+#           bnew_body["id"] = input.Headers["X-Github-Delivery"];
+#           bnew_body["data"] = b
+#           input["Body"] = JSON.stringify(bnew_body)
+#     - type: request-convert
+#       configuration:
+#         omit_headers: false
+#         omit_queries: false
+#         omit_body: false
+#         omit_consumer: false     
+#     # - type: "request-convert"
+#     #   configuration:
+#     #     omit_headers: false
+#     #     omit_queries: false
+#     #     omit_body: false
+#     #     omit_consumer: false  
+#     # - type: "js-inbound"
+#     #   configuration:
+#     #     script: |-
+#     #         // b = JSON.parse(input["body"])
+#     #         // input["specversion"] = "1.0"
+#     #         // input["id"] = input.headers //["X-Github-Delivery"][0]
+#     #         // input["source"] = input.body.repository.git_url
+#     #         // input["type"] = input.headers //.X-Github-Event
+#     #         // input["subject"] = input.headers //.X-Github-Event
+#     #         // input["data"] = input
+#     #         delete input.body;
+#     #         //delete input.consumer;
+#     #         //delete input.headers;
+#     #         //delete input.query_params;
+#     #         //delete input.url_params;
+#     #         return input;
+#   # target:
+#   #   type: "target-event"
+#   #   configuration:
+#   #     namespace: "demo-workflows"
+#   target:
+#     type: "target-flow"
+#     configuration:
+#       namespace: "demo-workflows"
+#       flow: "/run-github-webhook/workflows/run-github-webhook.yaml"
+#       content_type: "application/json"      
+# methods:
+#   - POST
+# timeout: 10
 allow_anonymous: true
-path: /v1/github-event
+path: "/v1/github-event"
+timeout: 10
+methods:
+  - "POST"
 plugins:
-  inbound:
-    - type: js-inbound
-      configuration:
-        script: |
-          input["Headers"].Delete("Content-Type");
-          input["Headers"].Add("Content-Type","application/cloudevents+json; charset=utf-8");
-          b = JSON.parse(input["Body"]);
-          var bnew_body = new Object()
-          bnew_body["specversion"] = "1.0";
-          bnew_body["id"] = input.Headers["X-Github-Delivery"];
-          bnew_body["data"] = b
-          input["Body"] = JSON.stringify(bnew_body)
-    - type: request-convert
-      configuration:
-        omit_headers: false
-        omit_queries: false
-        omit_body: false
-        omit_consumer: false     
-    # - type: "request-convert"
-    #   configuration:
-    #     omit_headers: false
-    #     omit_queries: false
-    #     omit_body: false
-    #     omit_consumer: false  
-    # - type: "js-inbound"
-    #   configuration:
-    #     script: |-
-    #         // b = JSON.parse(input["body"])
-    #         // input["specversion"] = "1.0"
-    #         // input["id"] = input.headers //["X-Github-Delivery"][0]
-    #         // input["source"] = input.body.repository.git_url
-    #         // input["type"] = input.headers //.X-Github-Event
-    #         // input["subject"] = input.headers //.X-Github-Event
-    #         // input["data"] = input
-    #         delete input.body;
-    #         //delete input.consumer;
-    #         //delete input.headers;
-    #         //delete input.query_params;
-    #         //delete input.url_params;
-    #         return input;
-  # target:
-  #   type: "target-event"
-  #   configuration:
-  #     namespace: "demo-workflows"
   target:
-    type: "target-flow"
+    type: "target-event"
     configuration:
       namespace: "demo-workflows"
-      flow: "/run-github-webhook/workflows/run-github-webhook.yaml"
-      content_type: "application/json"      
-methods:
-  - POST
-timeout: 10
+  inbound: []
+  outbound: []
+  auth:
+    - type: "github-webhook-auth"
+      configuration:
+        secret: "api123"
