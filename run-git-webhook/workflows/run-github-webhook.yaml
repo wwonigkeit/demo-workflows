@@ -10,6 +10,7 @@ functions:
     size: large
     cmd: /usr/share/direktiv/direktiv-cmd
 
+  # This is the Direktiv http-request container
   - id: http-request
     image: gcr.io/direktiv/functions/http-request:1.0
     type: knative-workflow
