@@ -18,3 +18,8 @@ plugins:
         omit_queries: false
         omit_body: false
         omit_consumer: false
+  outbound: []
+  auth:
+    - type: "github-webhook-auth"
+      configuration:
+        secret: "api123"
