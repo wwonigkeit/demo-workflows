@@ -9,6 +9,11 @@ functions:
     type: knative-workflow
     size: large
     cmd: /usr/share/direktiv/direktiv-cmd
+
+  - id: http-request
+    image: gcr.io/direktiv/functions/http-request:1.0
+    type: knative-workflow
+    size: small    
  
 states:
   # Store in the incoming playbook as a variable to use in subsequent states
