@@ -9,7 +9,7 @@ plugins:
     type: "target-flow"
     configuration:
       namespace: "demo-workflows"
-      flow: "/run-github-webhook/workflows/run-github-webhook.yaml"
+      flow: "/run-git-webhook/workflows/run-github-webhook.yaml"
       content_type: "application/json"
   inbound:
     - type: "request-convert"

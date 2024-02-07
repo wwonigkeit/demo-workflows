@@ -1,0 +1,32 @@
+direktiv_api: workflow/v1
+
+description: Execute an orchestration policy based on the GitLab webhook
+
+functions:
+  # This is the official GitLab runner from hub.docker.com
+  - id: gitlab-runner
+    image: gitlab/gitlab-runner:latest
+    type: knative-workflow
+    size: large
+    cmd: /usr/share/direktiv/direktiv-cmd
+ 
+states:
+  # Store in the incoming GitLab webhook as a variable to use in subsequent states
+  - id: print-incoming
+    type: noop
+    log: jq(.)
+    transition: start-runner
+
+  - id: start-runner
+    type: action
+    action:
+      function: gitlab-runner
+      secrets: ["GITLAB_TOKEN"]
+      files: 
+      - key: /run-git-webhook/certs/ca.crt
+        scope: workflow
+        as: /etc/gitlab-runner/certs/ca.crt
+      input:
+        data:
+          commands:
+          - command: gitlab-runner register --non-interactive --url "https://gitlab.com" --token jq(.secrets.GITLAB_TOKEN) --name direktiv-runner --host = "http://localhost:9876/" --executor docker 
