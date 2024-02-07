@@ -40,15 +40,15 @@ states:
     #transform: 'jq( { access_token: .return[0].result.access_token } )'
     #transition: start-runner
 
-  - id: start-runner
-    type: action
-    action:
-      function: github-runner
-      input:
-        data:
-          commands: 
-          - command: mkdir actions-runner && cd actions-runner
-          - command: curl -o actions-runner-linux-x64-2.312.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.312.0/actions-runner-linux-x64-2.312.0.tar.gz
-          - command: tar xzf ./actions-runner-linux-x64-2.312.0.tar.gz
-          - command: ./config.sh --url https://github.com/direktiv --token ACWRYZLEZIF4LHBDMKVZUT3FYQNKK
-          - command: ./run.sh
+  # - id: start-runner
+  #   type: action
+  #   action:
+  #     function: github-runner
+  #     input:
+  #       data:
+  #         commands: 
+  #         - command: mkdir actions-runner && cd actions-runner
+  #         - command: curl -o actions-runner-linux-x64-2.312.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.312.0/actions-runner-linux-x64-2.312.0.tar.gz
+  #         - command: tar xzf ./actions-runner-linux-x64-2.312.0.tar.gz
+  #         - command: ./config.sh --url https://github.com/direktiv --token ACWRYZLEZIF4LHBDMKVZUT3FYQNKK
+  #         - command: ./run.sh
