@@ -5,7 +5,7 @@ description: Execute an orchestration policy based on the GitHub webhook
 functions:
   # This is the official GitLab runner from hub.docker.com
   - id: github-runner
-    image: 
+    image: ubuntu:latest
     type: knative-workflow
     size: large
     cmd: /usr/share/direktiv/direktiv-cmd
