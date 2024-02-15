@@ -35,7 +35,6 @@ states:
         data:
           commands:
           # - command: pip install -r requirements.txt
-          - command: pip install json
           - command: pip install requests
           - command: python3 python.py
     catch:
