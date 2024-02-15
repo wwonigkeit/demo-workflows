@@ -21,21 +21,21 @@ states:
   - id: log-input
     type: noop
     log: jq(.)
+    transition: run-code
 
   - id: run-code
     type: action
     action:
       function: python
       files: 
-      - key: /run-docker-container/code/decodePayload.py
-        scope: file
-        as: decodePayload.py
+      - key: python.py
+        scope: workflow
+        as: python.py
       input: 
         data:
           commands:
           - command: pip install -r requirements.txt
-          - command: python3 decodePayload.py --header jq(.header) --payload jq(.payload)
-    transform: 'jq( { jwt_attributes: (.return[0].Output | fromjson) }  )'
+          - command: python3 python.py
     catch:
     - error: "*"
       transition: exception-catch-handle
