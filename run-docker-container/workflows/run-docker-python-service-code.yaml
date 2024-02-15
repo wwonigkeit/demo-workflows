@@ -37,7 +37,7 @@ states:
           # - command: pip install -r requirements.txt
           - command: pip install requests
           - command: python3 python.py
-    #transform: jq(.return[1].output)
+    transform: 'jq( { output: .return[1].Output })'
     catch:
     - error: "*"
       transition: exception-catch-handle

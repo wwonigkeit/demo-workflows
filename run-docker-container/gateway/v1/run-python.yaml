@@ -15,12 +15,12 @@ plugins:
       namespace: demo-workflows
       flow: /run-docker-container/workflows/run-docker-python-service-code.yaml
       content_type: application/json
-  # outbound:
-  #   - type: js-outbound
-  #     configuration:
-  #       script: |
-  #           b = JSON.parse(input["Body"])
-  #           input["Body"] = JSON.stringify(b["jwt_attributes"])
+  outbound:
+    - type: js-outbound
+      configuration:
+        script: |
+            b = JSON.parse(input["Body"])
+            input["Body"] = JSON.stringify(b["output"])
 methods:
   - POST
 timeout: 10
