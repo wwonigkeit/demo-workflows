@@ -1,0 +1,26 @@
+direktiv_api: endpoint/v1
+allow_anonymous: true
+path: /v1/run-python
+plugins:
+  inbound:
+    - type: request-convert
+      configuration:
+        omit_headers: false
+        omit_queries: false
+        omit_body: false
+        omit_consumer: false    
+  target:
+    type: target-flow
+    configuration:
+      namespace: demo-workflows
+      flow: /run-docker-container/workflows/run-docker-python-service-code.yaml
+      content_type: application/json
+  outbound:
+    - type: js-outbound
+      configuration:
+        script: |
+            b = JSON.parse(input["Body"])
+            input["Body"] = JSON.stringify(b["jwt_attributes"])
+methods:
+  - POST
+timeout: 10

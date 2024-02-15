@@ -46,9 +46,11 @@ states:
       function: github-runner
       input:
         data:
-          commands: 
+          commands:
+          - command: apt update && apt upgrade
+          - command: apt --yes install curl
           - command: mkdir actions-runner && cd actions-runner
           - command: curl -o actions-runner-linux-x64-2.312.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.312.0/actions-runner-linux-x64-2.312.0.tar.gz
           - command: tar xzf ./actions-runner-linux-x64-2.312.0.tar.gz
-          - command: ./config.sh --url https://github.com/direktiv --token jq(.return[0].result.token)
-          - command: ./run.sh
+          - command: RUNNER_ALLOW_RUNASROOT="1" ./config.sh --url https://github.com/direktiv --token jq(.return[0].result.token)
+          - command: RUNNER_ALLOW_RUNASROOT="1" ./run.sh

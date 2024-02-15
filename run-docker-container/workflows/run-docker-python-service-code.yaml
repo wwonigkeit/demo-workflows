@@ -1,0 +1,37 @@
+direktiv_api: workflow/v1
+
+description: Run a Docker Hub Python container without any changes
+
+functions:
+  # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
+  - id: python
+    service: /run-docker-container/services/python.yaml
+    type: knative-namespace
+ 
+states:
+  - id: log-input
+    type: noop
+    log: jq(.)
+
+  - id: run-code
+    type: action
+    action:
+      function: python
+      files: 
+      - key: /run-docker-container/code/decodePayload.py
+        scope: file
+        as: decodePayload.py
+      input: 
+        data:
+          commands:
+          - command: pip install -r requirements.txt
+          - command: python3 decodePayload.py --header jq(.header) --payload jq(.payload)
+    transform: 'jq( { jwt_attributes: (.return[0].Output | fromjson) }  )'
+    catch:
+    - error: "*"
+      transition: exception-catch-handle
+
+  - id: exception-catch-handle
+    type: noop
+    log: 'jq( {error: .error.msg, access_token: .access_token} )'
+    transform: 'jq( {error: .error.msg, access_token: .access_token} )'
