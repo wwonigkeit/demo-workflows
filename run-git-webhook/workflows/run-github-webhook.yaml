@@ -37,8 +37,8 @@ states:
           Accept: "application/vnd.github+json"
           Authorization: "Bearer jq(.secrets.GITHUB_PAT)"
           X-GitHub-Api-Version: "2022-11-28"
-    #transform: 'jq( { access_token: .return[0].result.access_token } )'
-    transition: start-runner
+    # transform: 'jq( { access_token: .return[0].result.access_token } )'
+    # transition: start-runner
 
   - id: start-runner
     type: action
