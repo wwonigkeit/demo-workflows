@@ -9,6 +9,15 @@ functions:
     type: knative-namespace
  
 states:
+  - id: store-code
+    type: setter
+    variables:
+    - key: python.py
+      scope: workflow
+      mimeType: text/plain
+      value: 'jq( .body.data | @base64d )'
+    transition: log-input
+
   - id: log-input
     type: noop
     log: jq(.)
