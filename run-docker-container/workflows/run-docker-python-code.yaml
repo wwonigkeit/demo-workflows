@@ -25,6 +25,8 @@ states:
         data:
           commands:
           - command: pip install requests
+            suppress_command: true
+            suppress_output: true
           - command: python3 pythonExample.py
     transform: 'jq( { output: ( .return[1].Output | fromjson) })'
     catch:
