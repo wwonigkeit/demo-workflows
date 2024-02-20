@@ -13,7 +13,7 @@ plugins:
     type: target-flow
     configuration:
       namespace: demo-workflows
-      flow: /run-docker-container/workflows/run-docker-python-service-code.yaml
+      flow: /run-docker-container/workflows/run-docker-python-code-service-gateway.yaml
       content_type: application/json
   outbound:
     - type: js-outbound

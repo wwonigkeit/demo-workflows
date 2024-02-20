@@ -1,0 +1,38 @@
+direktiv_api: workflow/v1
+
+description: Run a Docker Hub Python container without any changes
+
+functions:
+  # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
+  - id: python
+    image: python:3.9.18-slim-bookworm
+    type: knative-workflow
+    cmd: /usr/share/direktiv/direktiv-cmd
+ 
+states:
+  #
+  # Let's only run a single state which get the python version and run a simple code
+  #
+  - id: run-python-code
+    type: action
+    action:
+      function: python
+      files: 
+      - key: /run-docker-container/code/pythonExample.py
+        scope: file
+        as: pythonExample.py
+      input: 
+        data:
+          commands:
+          - command: python3 pythonExample.py
+    catch:
+    - error: "*"
+      transition: exception-catch-handle
+
+  #
+  # Handle the errors returned
+  #
+  - id: exception-catch-handle
+    type: noop
+    log: 'jq( {error: .error.msg, access_token: .access_token} )'
+    transform: 'jq( {error: .error.msg, access_token: .access_token} )'
