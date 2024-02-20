@@ -18,11 +18,7 @@ def main(argv):
         elif opt in ("-c", "--content"):
             content_type = arg
 
-    # input = "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTU2MjYwMzY5ODM2OTE1MDE4MTU1NDE5MQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icmVxdWlyZW1lbnRzLnR4dCINCkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbg0KDQpyZXF1ZXN0cw0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTU2MjYwMzY5ODM2OTE1MDE4MTU1NDE5MQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icHl0aG9uRXhhbXBsZS5weSINCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtDQoNCmltcG9ydCBqc29uCmltcG9ydCByZXF1ZXN0cwoKcmVzcG9uc2UgPSByZXF1ZXN0cy5nZXQoImh0dHBzOi8vanNvbnBsYWNlaG9sZGVyLnR5cGljb2RlLmNvbS90b2RvcyIpCnRvZG9zID0ganNvbi5sb2FkcyhyZXNwb25zZS50ZXh0KQoKIyBQcmV0dHkgUHJpbnRpbmcgSlNPTiBzdHJpbmcgYmFjawpwcmludChqc29uLmR1bXBzKHRvZG9zLCBpbmRlbnQgPSA0LCBzb3J0X2tleXM9VHJ1ZSkpDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tNTYyNjAzNjk4MzY5MTUwMTgxNTU0MTkxLS0NCg=="
-    print(body)
-    print(content_type)
     base64_data = base64.b64decode(body)
-    # content_type = "multipart/form-data; boundary=--------------------------562603698369150181554191"
 
     files_data = []
 
