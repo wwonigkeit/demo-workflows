@@ -1,50 +1,41 @@
 import base64
-import cgi
-import os
-import io
-import re
-
-# input = "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTIwMjYxNzQ0NjI1MjE3NjE1ODU3ODMwOA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icmVxdWlyZW1lbnRzLnR4dCINCkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbg0KDQpyZXF1ZXN0cw0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTIwMjYxNzQ0NjI1MjE3NjE1ODU3ODMwOA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icHl0aG9uX2V4YW1wbGUucHkiDQpDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL29jdGV0LXN0cmVhbQ0KDQppbXBvcnQganNvbgppbXBvcnQgcmVxdWVzdHMKCnJlc3BvbnNlID0gcmVxdWVzdHMuZ2V0KCJodHRwczovL2pzb25wbGFjZWhvbGRlci50eXBpY29kZS5jb20vdG9kb3MiKQp0b2RvcyA9IGpzb24ubG9hZHMocmVzcG9uc2UudGV4dCkKCiMgUHJldHR5IFByaW50aW5nIEpTT04gc3RyaW5nIGJhY2sKcHJpbnQoanNvbi5kdW1wcyh0b2RvcywgaW5kZW50ID0gNCwgc29ydF9rZXlzPVRydWUpKQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTIwMjYxNzQ0NjI1MjE3NjE1ODU3ODMwOC0tDQo="
-# # boundary = "--------------------------202617446252176158578308"
-
-# base64_data = base64.b64decode(input)
-# multiform_data = base64_data.decode("utf-8")
-# print(multiform_data)
-
-
-
-# Sample multipart form-data payload
-form_data = """
-----------------------------202617446252176158578308
-Content-Disposition: form-data; name="python_files"; filename="requirements.txt"
-Content-Type: text/plain
-
-requests
-----------------------------202617446252176158578308
-Content-Disposition: form-data; name="python_files"; filename="python_example.py"
-Content-Type: application/octet-stream
-
 import json
-import requests
+from requests_toolbelt.multipart import decoder
+import sys, getopt
 
-response = requests.get("https://jsonplaceholder.typicode.com/todos")
-todos = json.loads(response.text)
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv,"hb:c:",["body=","content="])
+    except getopt.GetoptError:
+        print ('extractFiles.py -b <body> -o <content>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print ('extractFiles.py -b <body> -c <content>')
+            sys.exit()
+        elif opt in ("-b", "--body"):
+            body = arg
+        elif opt in ("-c", "--content"):
+            content_type = arg
 
-# Pretty Printing JSON string back
-print(json.dumps(todos, indent = 4, sort_keys=True))
-----------------------------202617446252176158578308--
-"""
+    # input = "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTU2MjYwMzY5ODM2OTE1MDE4MTU1NDE5MQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icmVxdWlyZW1lbnRzLnR4dCINCkNvbnRlbnQtVHlwZTogdGV4dC9wbGFpbg0KDQpyZXF1ZXN0cw0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLTU2MjYwMzY5ODM2OTE1MDE4MTU1NDE5MQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJweXRob25fZmlsZXMiOyBmaWxlbmFtZT0icHl0aG9uRXhhbXBsZS5weSINCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtDQoNCmltcG9ydCBqc29uCmltcG9ydCByZXF1ZXN0cwoKcmVzcG9uc2UgPSByZXF1ZXN0cy5nZXQoImh0dHBzOi8vanNvbnBsYWNlaG9sZGVyLnR5cGljb2RlLmNvbS90b2RvcyIpCnRvZG9zID0ganNvbi5sb2FkcyhyZXNwb25zZS50ZXh0KQoKIyBQcmV0dHkgUHJpbnRpbmcgSlNPTiBzdHJpbmcgYmFjawpwcmludChqc29uLmR1bXBzKHRvZG9zLCBpbmRlbnQgPSA0LCBzb3J0X2tleXM9VHJ1ZSkpDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tNTYyNjAzNjk4MzY5MTUwMTgxNTU0MTkxLS0NCg=="
+    base64_data = base64.b64decode(body)
+    # content_type = "multipart/form-data; boundary=--------------------------562603698369150181554191"
 
-# Regular expression to extract parts of the payload
-pattern = re.compile(r'filename="([^"]+)"\r\n\r\n([\s\S]+?)\r\n')
+    files_data = []
 
-# Extract files
-file_names = []
-matches = pattern.findall(form_data)
-for match in matches:
-    filename, content = match
-    with open(filename, 'wb') as f:
-        f.write(content.encode('utf-8'))
-    file_names.append(filename)
+    for part in decoder.MultipartDecoder(base64_data, content_type).parts:
+        headers = {key.decode(): value.decode() for key, value in part.headers.items()}
+        content_disposition = headers.get('Content-Disposition', '')
+        if content_disposition:
+            parts = content_disposition.split(';')
+            for party in parts:
+                if 'filename' in party:
+                    _, file_name = party.strip().split('=')
+                    file_name = file_name.strip('"')
+                    files_data.append({"fname": file_name, "content": part.text})
 
-print("Files extracted:", file_names)
+    print(json.dumps(files_data, indent=4))
+
+if __name__ == "__main__":
+   main(sys.argv[1:])

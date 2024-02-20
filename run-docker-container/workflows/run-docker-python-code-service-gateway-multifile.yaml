@@ -9,19 +9,35 @@ functions:
     type: knative-namespace
  
 states:
-  - id: log-input
-    type: noop
-    log: jq(.)
-    #transition: run-code
+  # 
+  # Extract the files from the multipart document sent from the request
+  #
+  - id: extract-multipart
+    type: action
+    action:
+      function: python
+      files: 
+      - key: /run-docker-container/code/extractFiles.py
+        scope: file
+        as: extractFiles.py
+      input: 
+        data:
+          commands:
+          - command: python3 extractFiles.py -b jq(.body.data) -c jq(.headers."Content-Type")
+    transform: 'jq( { output: ( .return[0].Output | fromjson) })'
+    #transition: store-code
+    catch:
+    - error: "*"
+      transition: exception-catch-handle
 
-  # - id: store-code
-  #   type: setter
-  #   variables:
-  #   - key: python.py
-  #     scope: workflow
-  #     mimeType: text/plain
-  #     value: 'jq( .body.data | @base64d )'
-  #   transition: run-code
+  - id: store-code
+    type: setter
+    variables:
+    - key: python.py
+      scope: workflow
+      mimeType: text/plain
+      value: 'jq( .body.data | @base64d )'
+    transition: run-code
 
   # - id: run-code
   #   type: action
