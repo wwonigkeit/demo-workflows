@@ -1,6 +1,6 @@
 direktiv_api: workflow/v1
 
-description: Run a Docker Hub Python container without any changes
+description: Run a Docker Hub Python container without any changes - run only a command
 
 functions:
   # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
