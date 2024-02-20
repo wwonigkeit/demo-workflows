@@ -27,7 +27,7 @@ states:
           #   suppress_command: true
           #   suppress_output: true
           - command: python3 pythonExample.py
-    transform: 'jq( { output: ( .return[1].Output | fromjson) })'
+    transform: 'jq( { output: ( .return[0].Output | fromjson) })'
     catch:
     - error: "*"
       transition: exception-catch-handle
