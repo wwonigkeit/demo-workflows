@@ -24,8 +24,8 @@ states:
         data:
           commands:
           # - command: pip install requests_toolbelt
-          - command: python3 extractFiles.py -b jq(.body.data) -c jq(.headers."Content-Type")
-    #transform: 'jq( { output: ( .return[0].Output | fromjson) })'
+          - command: python3 extractFiles.py -b jq(.body.data) -c 'jq(.headers."Content-Type"[0])'
+    transform: 'jq( { output: ( .return[0].Output | fromjson) })'
     #transition: store-code
     catch:
     - error: "*"
