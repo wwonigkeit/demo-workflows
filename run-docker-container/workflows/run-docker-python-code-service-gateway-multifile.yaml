@@ -58,7 +58,9 @@ states:
   #   - error: "*"
   #     transition: exception-catch-handle
 
-  # - id: exception-catch-handle
-  #   type: noop
-  #   log: 'jq( {error: .error.msg, access_token: .access_token} )'
-  #   transform: 'jq( {error: .error.msg, access_token: .access_token} )'
+  #
+  # Handle the errors returned
+  #
+  - id: exception-catch-handle
+    type: noop
+    log: jq(.)
