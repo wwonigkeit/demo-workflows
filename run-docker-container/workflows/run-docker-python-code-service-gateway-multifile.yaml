@@ -37,7 +37,7 @@ states:
       scope: workflow
       mimeType: text/plain
       value: 'jq( .body.data | @base64d )'
-    transition: run-code
+    # transition: run-code
 
   # - id: run-code
   #   type: action
