@@ -26,6 +26,7 @@ states:
           commands:
           - command: pip install requests
           - command: python3 pythonExample.py
+    transform: 'jq( { output: ( .return[1].Output | fromjson) })'
     catch:
     - error: "*"
       transition: exception-catch-handle
@@ -35,5 +36,4 @@ states:
   #
   - id: exception-catch-handle
     type: noop
-    log: 'jq( {error: .error.msg, access_token: .access_token} )'
-    transform: 'jq( {error: .error.msg, access_token: .access_token} )'
+    log: jq(.)
