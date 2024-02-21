@@ -19,7 +19,7 @@ plugins:
             newbody["source"] = "source";
             newbody["type"] = "type";
             newbody["subject"] = "subject";
-            newbody["data"] = b;
+            newbody["data"] = b.body;
             input["Body"] = JSON.stringify(newbody);
   # target:
   #   type: "target-event"
