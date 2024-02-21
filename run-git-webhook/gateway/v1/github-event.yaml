@@ -19,12 +19,12 @@ plugins:
             //input["type"] = input.headers //.X-Github-Event
             //input["subject"] = input.headers //.X-Github-Event
             //input["data"] = input
-            //delete input.body;
+            delete input.body;
             //delete input.consumer;
             //delete input.headers;
             //delete input.query_params;
             //delete input.url_params;
-            return input;
+            //return input;
   # target:
   #   type: "target-event"
   #   configuration:
