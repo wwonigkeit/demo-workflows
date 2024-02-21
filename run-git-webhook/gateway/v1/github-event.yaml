@@ -12,7 +12,7 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |-
-            input["Queries"].Add("new", "param")
+            input["Headers"].Add("new", "param")
             b = JSON.parse(input["Body"])
             b["newvalue"] = 1200
             input["Body"] = JSON.stringify(b)
