@@ -9,13 +9,13 @@ plugins:
     #     omit_queries: false
     #     omit_body: false
     #     omit_consumer: false  
-    - type: "js-inbound"
-      configuration:
-        script: |-
-            // input["Headers"].Add("new", "param")
-            b = JSON.parse(input["Body"])
-            b.body["newvalue"] = 1200
-            input["Body"] = JSON.stringify(b)
+    # - type: "js-inbound"
+    #   configuration:
+    #     script: |-
+    #         // input["Headers"].Add("new", "param")
+    #         b = JSON.parse(input["Body"])
+    #         b.body["newvalue"] = 1200
+    #         input["Body"] = JSON.stringify(b)
   # target:
   #   type: "target-event"
   #   configuration:
