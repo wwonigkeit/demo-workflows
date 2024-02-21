@@ -15,10 +15,10 @@ plugins:
             newbody = new Object();
             b = JSON.parse(input["Body"]);
             newbody["specversion"] = "1.0";
-            newbody["id"] = b.headers["X-Github-Delivery"];
-            newbody["source"] = "source";
-            newbody["type"] = b.headers["X-Github-Event"];
-            newbody["subject"] = "subject";
+            newbody["id"] = b.headers["X-Github-Delivery"][0];
+            newbody["source"] = b.body.repository.url;
+            newbody["type"] = b.headers["X-Github-Event"][0];
+            newbody["subject"] = b.body.repository.url;
             newbody["data"] = b.body;
             input["Body"] = JSON.stringify(newbody);
   # target:
