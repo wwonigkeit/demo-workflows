@@ -15,9 +15,9 @@ plugins:
             newbody = new Object();
             b = JSON.parse(input["Body"]);
             newbody["specversion"] = "1.0";
-            newbody["id"] = "id";
+            newbody["id"] = b.headers["X-Github-Delivery"];
             newbody["source"] = "source";
-            newbody["type"] = "type";
+            newbody["type"] = b.headers["X-Github-Event"];
             newbody["subject"] = "subject";
             newbody["data"] = b.body;
             input["Body"] = JSON.stringify(newbody);
