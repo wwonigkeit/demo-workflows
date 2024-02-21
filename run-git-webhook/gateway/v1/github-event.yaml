@@ -3,12 +3,12 @@ allow_anonymous: true
 path: /v1/github-event
 plugins:
   inbound:    
-    - type: "request-convert"
-      configuration:
-        omit_headers: false
-        omit_queries: false
-        omit_body: false
-        omit_consumer: false  
+    # - type: "request-convert"
+    #   configuration:
+    #     omit_headers: false
+    #     omit_queries: false
+    #     omit_body: false
+    #     omit_consumer: false  
     - type: "js-inbound"
       configuration:
         script: |-
