@@ -12,15 +12,15 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |-
-            let newbody
-            b = JSON.parse(input["Body"])
-            newbody["specversion"] = "1.0"
-            newbody["id"] = "id"
-            newbody["source"] = "source"
-            newbody["type"] = "type"
-            newbody["subject"] = "subject"
-            newbody["data"] = b
-            input["Body"] = JSON.stringify(newbody)
+            newbody = new Object();
+            b = JSON.parse(input["Body"]);
+            newbody["specversion"] = "1.0";
+            newbody["id"] = "id";
+            newbody["source"] = "source";
+            newbody["type"] = "type";
+            newbody["subject"] = "subject";
+            newbody["data"] = b;
+            input["Body"] = JSON.stringify(newbody);
   # target:
   #   type: "target-event"
   #   configuration:
