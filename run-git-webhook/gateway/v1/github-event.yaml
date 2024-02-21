@@ -12,19 +12,9 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |-
-            // b = JSON.parse(input["body"])
-            input.headers["specversion"] = "1.0"
-            //input["id"] = input.headers //["X-Github-Delivery"][0]
-            //input["source"] = input.body.repository.git_url
-            //input["type"] = input.headers //.X-Github-Event
-            //input["subject"] = input.headers //.X-Github-Event
-            //input["data"] = input
-            delete input.body;
-            //delete input.consumer;
-            //delete input.headers;
-            //delete input.query_params;
-            //delete input.url_params;
-            return input;
+            b = JSON.parse(input["Body"])
+            b["newvalue"] = 1200
+            input["Body"] = JSON.stringify(b)
   # target:
   #   type: "target-event"
   #   configuration:
