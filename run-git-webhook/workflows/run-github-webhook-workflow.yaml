@@ -1,0 +1,34 @@
+direktiv_api: workflow/v1
+
+description: Execute an orchestration policy based on the GitHub webhook event received
+
+functions:
+  # This is the Direktiv http-request container
+  - id: http-request
+    image: gcr.io/direktiv/functions/http-request:1.0
+    type: knative-workflow
+    size: small    
+ 
+states:
+  # Store in the incoming playbook as a variable to use in subsequent states
+  - id: print-incoming
+    type: noop
+    log: jq(.)
+    # transition: create-token
+
+  - id: create-token
+    log: Get a token from GitHUb to use in the runner registration
+    type: action
+    action:
+      function: http-request
+      secrets: ["GITHUB_PAT"]
+      input: 
+        debug: False
+        method: POST
+        url: 'https://api.github.com/repos/jq(.body.repository.owner.name)/jq(.body.repository.name)/actions/runners/registration-token'
+        headers:
+          Accept: "application/vnd.github+json"
+          Authorization: "Bearer jq(.secrets.GITHUB_PAT)"
+          X-GitHub-Api-Version: "2022-11-28"
+    # transform: 'jq( { access_token: .return[0].result.access_token } )'
+    # transition: start-runner
