@@ -1,6 +1,6 @@
 direktiv_api: workflow/v1
 
-description: Execute an orchestration policy based on the GitHub webhook comment
+description: Execute an orchestration policy based on the GitHub webhook
 
 functions:
   # This is the Direktiv http-request container
