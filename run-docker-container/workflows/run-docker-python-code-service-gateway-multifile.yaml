@@ -26,7 +26,7 @@ states:
           - command: pip install requests_toolbelt
           - command: python3 extractFiles.py -b jq(.body.data) -c 'jq(.headers."Content-Type"[0])'
     transform: 'jq( { output: ( .return[1].Output | fromjson) })'
-    #transition: store-code
+    transition: store-code
     catch:
     - error: "*"
       transition: exception-catch-handle
@@ -34,10 +34,14 @@ states:
   - id: store-code
     type: setter
     variables:
-    - key: python.py
+    - key: jq(.output[0].fname)
       scope: workflow
       mimeType: text/plain
-      value: 'jq( .body.data | @base64d )'
+      value: 'jq( .output[0].content )'
+    - key: jq(.output[1].fname)
+      scope: workflow
+      mimeType: text/plain
+      value: 'jq( .output[1].content )'
     # transition: run-code
 
   # - id: run-code
