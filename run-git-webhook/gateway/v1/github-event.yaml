@@ -12,9 +12,9 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |-
-            input["Headers"].Add("new", "param")
+            // input["Headers"].Add("new", "param")
             b = JSON.parse(input["Body"])
-            b["newvalue"] = 1200
+            b.body["newvalue"] = 1200
             input["Body"] = JSON.stringify(b)
   # target:
   #   type: "target-event"
