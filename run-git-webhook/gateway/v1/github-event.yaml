@@ -12,11 +12,15 @@ plugins:
     - type: "js-inbound"
       configuration:
         script: |-
-            // input["Headers"].Add("new", "param")
+            let newbody
             b = JSON.parse(input["Body"])
-            //b.body["newvalue"] = 1200
-            b["newvalue"] = 1200
-            input["Body"] = JSON.stringify(b)
+            newbody["specversion"] = "1.0"
+            newbody["id"] = "id"
+            newbody["source"] = "source"
+            newbody["type"] = "type"
+            newbody["subject"] = "subject"
+            newbody["data"] = b
+            input["Body"] = JSON.stringify(newbody)
   # target:
   #   type: "target-event"
   #   configuration:
