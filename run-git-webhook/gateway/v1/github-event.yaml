@@ -13,7 +13,7 @@ plugins:
       configuration:
         script: |-
             // b = JSON.parse(input["body"])
-            input["specversion"] = "1.0"
+            input.headers["specversion"] = "1.0"
             //input["id"] = input.headers //["X-Github-Delivery"][0]
             //input["source"] = input.body.repository.git_url
             //input["type"] = input.headers //.X-Github-Event
