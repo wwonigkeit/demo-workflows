@@ -21,16 +21,16 @@ plugins:
             newbody["subject"] = b.body.repository.url;
             newbody["data"] = b.body;
             input["Body"] = JSON.stringify(newbody);
-  # target:
-  #   type: "target-event"
-  #   configuration:
-  #     namespace: "demo-workflows"
   target:
-    type: "target-flow"
+    type: "target-event"
     configuration:
       namespace: "demo-workflows"
-      flow: "/run-git-webhook/workflows/run-github-webhook-event.yaml"
-      content_type: "application/json"
+  # target:
+  #   type: "target-flow"
+  #   configuration:
+  #     namespace: "demo-workflows"
+  #     flow: "/run-git-webhook/workflows/run-github-webhook-event.yaml"
+  #     content_type: "application/json"
   auth:
     - type: "github-webhook-auth"
       configuration:
