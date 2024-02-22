@@ -11,6 +11,7 @@ functions:
   - id: python-image
     image: python:3.9.18-slim-bookworm
     size: medium
+    type: knative-workflow
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
