@@ -4,9 +4,14 @@ description: Run a Docker Hub Python container without any changes
 
 functions:
   # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
-  - id: python
+  - id: python-service
     service: /run-docker-container/services/python.yaml
     type: knative-namespace
+
+  - id: python-image
+    image: python:3.9.18-slim-bookworm
+    size: medium
+    cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
   # 
@@ -15,7 +20,7 @@ states:
   - id: extract-multipart
     type: action
     action:
-      function: python
+      function: python-service
       files: 
       - key: /run-docker-container/code/extractFiles.py
         scope: file
@@ -42,26 +47,28 @@ states:
       scope: workflow
       mimeType: text/plain
       value: 'jq( .output[1].content )'
-    # transition: run-code
+    transition: run-code
 
-  # - id: run-code
-  #   type: action
-  #   action:
-  #     function: python
-  #     files: 
-  #     - key: python.py
-  #       scope: workflow
-  #       as: python.py
-  #     input: 
-  #       data:
-  #         commands:
-  #         # - command: pip install -r requirements.txt
-  #         - command: pip install requests
-  #         - command: python3 python.py
-  #   transform: 'jq( { output: ( .return[1].Output | fromjson) })'
-  #   catch:
-  #   - error: "*"
-  #     transition: exception-catch-handle
+  - id: run-code
+    type: action
+    action:
+      function: python-image
+      files: 
+      - key: jq(.output[0].fname)
+        scope: workflow
+        as: requirements.txt
+      - key: jq(.output[1].fname)
+        scope: workflow
+        as: jq(.output[1].fname)
+      input: 
+        data:
+          commands:
+          - command: pip install -r requirements.txt
+          - command: python3 jq(.output[1].fname)
+    # transform: 'jq( { output: ( .return[1].Output | fromjson) })'
+    catch:
+    - error: "*"
+      transition: exception-catch-handle
 
   #
   # Handle the errors returned
