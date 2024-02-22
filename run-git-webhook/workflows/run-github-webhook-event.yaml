@@ -2,6 +2,18 @@ direktiv_api: workflow/v1
 
 description: Execute an orchestration policy based on the GitHub webhook
 
+#
+# The start definition which starts the worklfow based on the event received from the
+# GitHub. Only start this workflow based on a push event from the demo-workflows repository
+#
+start:
+  type: event
+  state: print-incoming
+  event:
+    type: push
+    context:
+      source: "https://github.com/wwonigkeit/demo-workflows" 
+
 functions:
   # This is the Direktiv http-request container
   - id: http-request
@@ -10,25 +22,22 @@ functions:
     size: small    
  
 states:
-  # Store in the incoming playbook as a variable to use in subsequent states
+  # Print the incoming event information
   - id: print-incoming
     type: noop
     log: jq(.)
-    # transition: create-token
+    #transition: sync-mirror
 
-  - id: create-token
+  - id: sync-mirror
     log: Get a token from GitHUb to use in the runner registration
     type: action
     action:
       function: http-request
-      secrets: ["GITHUB_PAT"]
+      secrets: ["DIREKTIV_URL", "DIREKTIV_TOKEN"]
       input: 
         debug: False
         method: POST
-        url: 'https://api.github.com/repos/jq(.body.repository.owner.name)/jq(.body.repository.name)/actions/runners/registration-token'
+        url: 'https://jq(.secrets.DIREKTIV_URL)/api/namespaces/demo-workflows/tree?op=sync-mirror&force=true'
         headers:
-          Accept: "application/vnd.github+json"
-          Authorization: "Bearer jq(.secrets.GITHUB_PAT)"
-          X-GitHub-Api-Version: "2022-11-28"
-    # transform: 'jq( { access_token: .return[0].result.access_token } )'
-    # transition: start-runner
+          Content-Type: "application/json"
+          Direktiv-Token: "jq(.secrets.DIREKTIV_TOKEN)"
