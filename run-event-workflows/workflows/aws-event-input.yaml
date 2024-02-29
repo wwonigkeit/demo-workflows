@@ -14,13 +14,6 @@ start:
     type: "ec2_instance_state-change_notification"
     context:
       state: "running" 
-  # events:
-  # - type: "ec2_instance_state-change_notification"
-  #   context:
-  #     state: "running"
-  # - type: "ec2_instance_state-change_notification"
-  #   context:
-  #     state: "stopped"
 
 functions:
   # This is a simple aws-cli container from hub.docker.com

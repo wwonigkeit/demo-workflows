@@ -4,11 +4,7 @@ description: Run a Docker Hub Python container without any changes
 
 functions:
   # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
-  - id: python-service
-    service: /run-docker-container/services/python.yaml
-    type: knative-namespace
-
-  - id: python-image
+  - id: python
     image: python:3.9.18-slim-bookworm
     size: medium
     type: knative-workflow
@@ -21,7 +17,7 @@ states:
   - id: extract-multipart
     type: action
     action:
-      function: python-service
+      function: python
       files: 
       - key: /run-docker-container/code/extractFiles.py
         scope: file
@@ -53,18 +49,18 @@ states:
   - id: run-code
     type: action
     action:
-      function: python-image
+      function: python
       files: 
       - key: jq(.output[0].fname)
         scope: workflow
-        as: requirements.txt
+        as: jq(.output[0].fname)
       - key: jq(.output[1].fname)
         scope: workflow
         as: jq(.output[1].fname)
       input: 
         data:
           commands:
-          - command: pip install -r requirements.txt
+          - command: pip install -r jq(.output[0].fname)
           - command: python3 jq(.output[1].fname)
     transform: 'jq( { output: ( .return[1].Output | fromjson) })'
     catch:
