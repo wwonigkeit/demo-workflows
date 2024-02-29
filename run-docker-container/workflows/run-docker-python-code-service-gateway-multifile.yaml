@@ -49,6 +49,7 @@ states:
   # ]
   #
   - id: extract-multipart
+    log: jq(.)
     type: action
     action:
       function: python
@@ -75,11 +76,11 @@ states:
     type: setter
     variables:
     - key: jq(.output[0].fname)           # << This will store requirements.txt contents as requirements.txt
-      scope: workflow
+      scope: instance
       mimeType: text/plain
       value: 'jq( .output[0].content )'
     - key: jq(.output[1].fname)           # << This will store pythonMultifileExample.py contents as pythonMultifileExample.py
-      scope: workflow
+      scope: instance
       mimeType: text/plain
       value: 'jq( .output[1].content )'
     transition: run-code
@@ -95,10 +96,10 @@ states:
       function: python
       files: 
       - key: jq(.output[0].fname)         # << This will create a file requirements.txt
-        scope: workflow
+        scope: instance
         as: jq(.output[0].fname)
       - key: jq(.output[1].fname)         # << This will create a file pythonMultifileExample.py
-        scope: workflow
+        scope: instance
         as: jq(.output[1].fname)
       input: 
         data:
@@ -108,6 +109,7 @@ states:
             - command: cp output.csv out/instance/output.csv  # Copy the output of the script into a reserved directory "out/instance/" or "out/workflow/". Based on whether this is set to instance or workflow level variable. This can then be used in subsequent states.
               suppress_command: true                          # << Don't show the execution
               suppress_output: true                           # << Don't show the output of the commmand
+            - command: ls -laR
     transition: push-output
     catch:
     - error: "*"
