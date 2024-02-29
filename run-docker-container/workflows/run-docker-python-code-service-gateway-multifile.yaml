@@ -78,7 +78,7 @@ states:
     variables:
     - key: output.csv
       scope: instance
-    transform: 'jq( {result: .var."output.csv" } )'
+    transform: 'jq( {output: .var."output.csv" } )'
 
   #
   # Handle the errors returned
