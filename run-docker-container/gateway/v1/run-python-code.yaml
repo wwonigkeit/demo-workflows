@@ -23,4 +23,4 @@ plugins:
             input["Body"] = JSON.stringify(b["output"])
 methods:
   - POST
-timeout: 10
+timeout: 60
