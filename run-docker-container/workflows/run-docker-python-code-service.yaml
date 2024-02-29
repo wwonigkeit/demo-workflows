@@ -17,17 +17,17 @@ states:
     action:
       function: python
       files: 
-      - key: /run-docker-container/code/pythonExample.py
-        scope: file
-        as: pythonExample.py
+      - key: /run-docker-container/code/pythonExample.py            # << Pull the pythonExample.py code from Git repository we synchronised
+        scope: file                                                 # << Create a file in the container (function)
+        as: pythonExample.py                                        # << Name the file pythonExample.py
       input: 
         data:
           commands:
-          # - command: pip install requests
-          #   suppress_command: true
-          #   suppress_output: true
-          - command: python3 pythonExample.py
-    transform: 'jq( { output: ( .return[0].Output | fromjson) })'
+          # - command: pip install requests                         # << Install modules with pip - only do this the first time to initialise the container
+          #   suppress_command: true                                # << Don't show the execution
+          #   suppress_output: true                                 # << Don't show the output of the commmand
+          - command: python3 pythonExample.py                       # << Run the commmand
+    transform: 'jq( { output: ( .return[0].Output | fromjson) })'   # << Modify the output of the JSN object created
     catch:
     - error: "*"
       transition: exception-catch-handle

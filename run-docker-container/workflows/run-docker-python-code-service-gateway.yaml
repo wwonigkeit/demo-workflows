@@ -13,29 +13,29 @@ states:
   # Store the code received from the gateway as a base64 encoded file in a variable we can use
   #
   - id: store-code
-    type: setter
+    type: setter                            # << Store a variable in Direktiv
     variables:
-    - key: python.py
-      scope: instance
-      mimeType: text/plain
-      value: 'jq( .body.data | @base64d )'
+    - key: python.py                        # << Name the variable python.py
+      scope: instance                       # << Make it an "instance" variable - not re-usable for other executions
+      mimeType: text/plain                  # << Store as plain text
+      value: 'jq( .body.data | @base64d )'  # << Store the content of the variable as the base64 decoded content of the request (from the API gateway)
     transition: run-python-code
 
   #
-  # Let's only run a single state which get the python version and run a simple code
+  # Let's run the python code sent to us by the API gateway / user
   #
   - id: run-python-code
     type: action
     action:
       function: python
       files: 
-      - key: python.py
-        scope: instance
+      - key: python.py                                              # << Copy the contents of the variable python.py as a file to the container
+        scope: instance                                             # << Retrive from as "instance" variable - not re-usable for other executions
       input: 
         data:
           commands:
-          - command: python3 python.py
-    transform: 'jq( { output: ( .return[0].Output | fromjson) })'
+          - command: python3 python.py                              # << Run the python script we just copied to the file system
+    transform: 'jq( { output: ( .return[0].Output | fromjson) })'   # << Modify the output using jq for the response via the API gateway
     catch:
     - error: "*"
       transition: exception-catch-handle

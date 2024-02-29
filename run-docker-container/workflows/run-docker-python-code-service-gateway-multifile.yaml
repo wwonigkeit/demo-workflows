@@ -12,7 +12,41 @@ functions:
  
 states:
   # 
-  # Extract the files from the multipart document sent from the request
+  # Extract the files from the multipart document sent from the request. This is done using a Python script 
+  # which is stored in the /run-docker-container/code/ directory. This is part of the syncrhonisation between the
+  # Git repository and Direktiv.
+  #
+  # The extracFiles.py script input looks like this:
+  #
+  #
+  #   {
+  #     "url_params": {},
+  #     "query_params": {},
+  #     "headers": {
+  #         :
+  #         "Content-Type": [
+  #             "multipart/form-data; boundary=------------------------iwCIorkx4lp6mThwu9ijrY"
+  #         ],
+  #         :
+  #     },
+  #     "body": {
+  #         "data": "LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1pd0NJb3JreDRscDZtVGh3dTlpanJZDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9InB5dGhvbl9maWxlIjsgZmlsZW5hbWU9InJlcXVpcmVtZW50cy50eHQiDQpDb250ZW50LVR5cGU6IHRleHQvcGxhaW4NCg0KcGFuZGFzDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLWl3Q0lvcmt4NGxwNm1UaHd1OWlqclkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0icHl0aG9uX2ZpbGUiOyBmaWxlbmFtZT0icHl0aG9uTXVsdGlmaWxlRXhhbXBsZS5weSINCkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vb2N0ZXQtc3RyZWFtDQoNCmltcG9ydCBqc29uCmltcG9ydCByZXF1ZXN0cwppbXBvcnQgcGFuZGFzIGFzIHBkCgpyZXNwb25zZSA9IHJlcXVlc3RzLmdldCgiaHR0cHM6Ly9qc29ucGxhY2Vob2xkZXIudHlwaWNvZGUuY29tL3RvZG9zIikKdG9kb3MgPSBqc29uLmxvYWRzKHJlc3BvbnNlLnRleHQpCmRmID0gcGQucmVhZF9qc29uKGpzb24uZHVtcHModG9kb3MsIGluZGVudCA9IDQsIHNvcnRfa2V5cz1UcnVlKSkKZGYudG9fY3N2KCJvdXRwdXQuY3N2IiwgaW5kZXg9RmFsc2UpDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLWl3Q0lvcmt4NGxwNm1UaHd1OWlqclktLQ0K"
+  #     }
+  # }
+  #
+  # The output of the script is:
+  #
+  #
+  # [
+  #   {
+  #     "fname": "requirements.txt",
+  #     "content": "pandas"
+  #   },
+  #   {
+  #     "fname": "pythonMultifileExample.py",
+  #     "content": "import json\nimport requests\nimport pandas as pd\n\nresponse = requests.get(\"https://jsonplaceholder.typicode.com/todos\")\ntodos = json.loads(response.text)\ndf = pd.read_json(json.dumps(todos, indent = 4, sort_keys=True))\ndf.to_csv(\"output.csv\", index=False)"
+  #   }
+  # ]
   #
   - id: extract-multipart
     type: action
@@ -33,38 +67,47 @@ states:
     - error: "*"
       transition: exception-catch-handle
 
+  # 
+  # Store the extract file name and contents as re-usable variables in Direktiv
+  #
   - id: store-code
+    log: jq(.)
     type: setter
     variables:
-    - key: jq(.output[0].fname)
+    - key: jq(.output[0].fname)           # << This will store requirements.txt contents as requirements.txt
       scope: workflow
       mimeType: text/plain
       value: 'jq( .output[0].content )'
-    - key: jq(.output[1].fname)
+    - key: jq(.output[1].fname)           # << This will store pythonMultifileExample.py contents as pythonMultifileExample.py
       scope: workflow
       mimeType: text/plain
       value: 'jq( .output[1].content )'
     transition: run-code
 
+  #
+  # Let's run the python code sent to us by the API gateway / user, which includes the requirments.txt
+  # and the actual Python script
+  #
   - id: run-code
+    log: jq(.)
     type: action
     action:
       function: python
       files: 
-      - key: jq(.output[0].fname)
+      - key: jq(.output[0].fname)         # << This will create a file requirements.txt
         scope: workflow
         as: jq(.output[0].fname)
-      - key: jq(.output[1].fname)
+      - key: jq(.output[1].fname)         # << This will create a file pythonMultifileExample.py
         scope: workflow
         as: jq(.output[1].fname)
       input: 
         data:
           commands:
-            - command: pip install -r jq(.output[0].fname)
-            - command: python3 jq(.output[1].fname)
-            - command: cp output.csv out/instance/output.csv
-              suppress_command: true
-              suppress_output: true          
+            - command: pip install -r jq(.output[0].fname)    # << Install requirements
+            - command: python3 jq(.output[1].fname)           # << Run the Python script
+            - command: cp output.csv out/instance/output.csv  # Copy the output of the script into a reserved directory "out/instance/" or "out/workflow/". Based on whether this is set to instance or workflow level variable. This can then be used in subsequent states.
+              suppress_command: true                          # << Don't show the execution
+              suppress_output: true                           # << Don't show the output of the commmand
     transition: push-output
     catch:
     - error: "*"
@@ -74,9 +117,9 @@ states:
   # Send the output.csv file to the API gateway
   #
   - id: push-output
-    type: getter
+    type: getter                                              # << Retrieve the variable
     variables:
-    - key: output.csv
+    - key: output.csv                                         # << Get output.csv
       scope: instance
     transform: 'jq( {output: .var."output.csv" } )'
 

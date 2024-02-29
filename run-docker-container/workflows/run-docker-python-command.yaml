@@ -10,7 +10,9 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
+  #
   # Let's only run a single state which get the python version and run a simple command
+  #
   - id: run-python-command
     type: action
     action:
@@ -18,5 +20,5 @@ states:
       input: 
         data:
           commands:
-          - command: python3 --version
-          - command: python3 -c "print('hello world')"
+          - command: python3 --version                    # << Run a Python commmand
+          - command: python3 -c "print('hello world')"    # << Run a Python commmand
