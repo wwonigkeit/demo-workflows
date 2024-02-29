@@ -16,7 +16,7 @@ states:
     type: setter
     variables:
     - key: python.py
-      scope: workflow
+      scope: instance
       mimeType: text/plain
       value: 'jq( .body.data | @base64d )'
     transition: run-python-code
@@ -30,7 +30,7 @@ states:
       function: python
       files: 
       - key: python.py
-        scope: workflow
+        scope: instance
       input: 
         data:
           commands:
