@@ -60,12 +60,25 @@ states:
       input: 
         data:
           commands:
-          - command: pip install -r jq(.output[0].fname)
-          - command: python3 jq(.output[1].fname)
-    transform: 'jq( { output: ( .return[1].Output | fromjson) })'
+            - command: pip install -r jq(.output[0].fname)
+            - command: python3 jq(.output[1].fname)
+            - command: cp output.csv out/instance/output.csv
+              suppress_command: true
+              suppress_output: true          
+    transition: push-output
     catch:
     - error: "*"
       transition: exception-catch-handle
+
+  # 
+  # Send the output.csv file to the API gateway
+  #
+  - id: push-output
+    type: getter
+    variables:
+    - key: output.csv
+      scope: instance
+    transform: 'jq( {result: .var."output.csv" } )'
 
   #
   # Handle the errors returned
