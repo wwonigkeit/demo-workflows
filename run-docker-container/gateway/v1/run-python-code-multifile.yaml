@@ -20,7 +20,7 @@ plugins:
       configuration:
         script: |
             b = JSON.parse(input["Body"])
-            input["Body"] = JSON.stringify(b["output"])
+            input["Body"] = b["output"]
             input["Headers"].Add("Content-Type", "application/octet-stream");
             input["Headers"].Add("Content-Disposition",'filename="output.csv"');            
 methods:
