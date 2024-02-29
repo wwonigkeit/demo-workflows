@@ -21,8 +21,9 @@ plugins:
         script: |
             b = JSON.parse(input["Body"])
             input["Body"] = b["output"]
-            input["Headers"].Add("Content-Type", "application/octet-stream");
-            input["Headers"].Add("Content-Disposition",'filename="output.csv"');            
+            input["Headers"].Add("Content-Type", "text/plain");
+            input["Headers"].Add("Content-Disposition", 'filename="output.csv"');
+            input["Headers"].Add("Content-Transfer-Encoding", "base64");
 methods:
   - POST
 timeout: 60
