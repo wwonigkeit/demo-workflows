@@ -26,4 +26,5 @@ plugins:
             input["Headers"].Add("Content-Transfer-Encoding", "base64");
 methods:
   - POST
+  - GET
 timeout: 60
