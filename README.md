@@ -2,7 +2,7 @@
 
 ## Description
 
-There are a couple of examples in this repository:
+There are a couple of examples in this repository
 
 ### run-docker-container
 This is the most simplest examples of how to run ANY container. In this case we use the Python container from hub.docker.com and run a Python code snippet. The progression of workflow complexity in the directory should be followed:
