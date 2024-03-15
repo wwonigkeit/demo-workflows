@@ -24,12 +24,12 @@ plugins:
             if (Object.keys(b).length > 1) {
 
             } else if (b.hasOwnProperty("state")) {
-              input["Body"] = b["state"]
+              input["Body"] = JSON.stringify(b["state"])
               input["Headers"].Add("Content-Type", "application/json");
 
             } else {
               var unkownKey = Object.keys(b)[0];
-              input["Body"] = b[unkownKey]
+              input["Body"] = JSON.stringify(b[unkownKey])
               input["Headers"].Add("Content-Type", "text/plain");
             }
 methods:
