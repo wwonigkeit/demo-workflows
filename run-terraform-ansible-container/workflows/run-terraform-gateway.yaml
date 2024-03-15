@@ -50,7 +50,7 @@ states:
           - command: terraform plan -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: terraform apply -auto-approve -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: cp terraform.tfstate out/workflow/terraform.tfstate
-    transform: 'jq( . + { init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" })'
+    transform: 'jq( . + { init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" } | del(.return))'
     transition: return-all
 
   # #
