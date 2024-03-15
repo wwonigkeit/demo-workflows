@@ -28,7 +28,7 @@ states:
           - command: pip3 install boto3 --break-system-packages
           - command: pip3 install ansible --break-system-packages
           - command: ansible-galaxy collection install amazon.aws
-          - command: ansible-playbook provision-aws.yaml --extra-vars "show_custom_stats=true stdout_callback=ansible.posix.json"
+          - command: ansible-playbook provision-aws.yaml -v --extra-vars "show_custom_stats=true stdout_callback=ansible.posix.json"
             envs: 
             - name: AWS_ACCESS_KEY_ID
               value: jq(.secrets.AWS_ACCESS_KEY_ID)

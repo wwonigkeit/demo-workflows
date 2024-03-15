@@ -46,7 +46,7 @@ states:
           - command: ansible-galaxy collection install amazon.aws
             suppress_output: true
             suppress_command: true
-          - command: ansible-playbook provision-aws.yaml --extra-vars "show_custom_stats=true stdout_callback=ansible.posix.json"
+          - command: ansible-playbook provision-aws.yaml -v --extra-vars "show_custom_stats=true stdout_callback=ansible.posix.json"
             envs: 
             - name: AWS_ACCESS_KEY_ID
               value: jq(.secrets.AWS_ACCESS_KEY_ID)
