@@ -20,7 +20,7 @@ plugins:
       configuration:
         script: |
             b = JSON.parse(input["Body"])
-            input["Body"] = JSON.stringify(b["result"])
+            input["Body"] = b["result"]
             input["Headers"].Add("Content-Type", "text/plain");       
 methods:
   - POST
