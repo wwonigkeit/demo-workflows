@@ -33,6 +33,7 @@ plugins:
                 input["Headers"].Add("Content-Type", "text/plain");
               }
             }
+            input["Body"] = b
 methods:
   - POST
 timeout: 300
