@@ -29,7 +29,7 @@ plugins:
 
             } else {
               var unkownKey = Object.keys(b)[0];
-              input["Body"] = JSON.stringify(b[unkownKey])
+              input["Body"] = b[unkownKey]
               input["Headers"].Add("Content-Type", "text/plain");
             }
 methods:
