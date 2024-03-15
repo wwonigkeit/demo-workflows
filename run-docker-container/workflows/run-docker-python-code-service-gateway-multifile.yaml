@@ -5,12 +5,10 @@ description: Run a Docker Hub Python container without any changes
 functions:
   # This is a simple Python container from hub.docker.com: docker pull python:3.9.18-slim-bookworm
   - id: python
-    # image: python:3.9.18-slim-bookworm
-    # size: medium
-    # type: knative-workflow
-    # cmd: /usr/share/direktiv/direktiv-cmd
-    service: /run-docker-container/services/python.yaml
-    type: knative-namespace    
+    image: python:3.9.18-slim-bookworm
+    size: medium
+    type: knative-workflow
+    cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
   # 

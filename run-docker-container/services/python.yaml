@@ -1,6 +1,5 @@
 direktiv_api: service/v1
-# image: python:3.9.18-slim-bookworm
-image: python:3.13.0a5-slim-bullseye
+image: python:3.9.18-slim-bookworm
 size: medium
 scale: 1
 cmd: /usr/share/direktiv/direktiv-cmd
