@@ -20,19 +20,19 @@ plugins:
       configuration:
         script: |
             b = JSON.parse(input["Body"])
-            if (Object.keys(b).length > 1) {
-              input["Body"] = b
-            } else {
-              var filteredJsonLength = Object.keys(b).length;
-              if (filteredJsonLength === 1 && b.hasOwnProperty("state")){
-                input["Body"] = b["state"]
-                input["Headers"].Add("Content-Type", "application/json");
-              } else {
-                var unkownKey = Object.keys(b)[0];
-                input["Body"] = b[unkownKey]
-                input["Headers"].Add("Content-Type", "text/plain");
-              }
-            }
+            //if (Object.keys(b).length > 1) {
+            //  input["Body"] = b
+            //} else {
+            //  var filteredJsonLength = Object.keys(b).length;
+            //  if (filteredJsonLength === 1 && b.hasOwnProperty("state")){
+            //     input["Body"] = b["state"]
+            //     input["Headers"].Add("Content-Type", "application/json");
+            //   } else {
+            //     var unkownKey = Object.keys(b)[0];
+            //     input["Body"] = b[unkownKey]
+            //     input["Headers"].Add("Content-Type", "text/plain");
+            //   }
+            // }
             input["Body"] = b
 methods:
   - POST
