@@ -15,12 +15,13 @@ plugins:
       namespace: demo-workflows
       flow: /run-terraform-ansible-container/workflows/run-ansible-gateway.yaml
       content_type: application/json
-  # outbound:
-  #   - type: js-outbound
-  #     configuration:
-  #       script: |
-  #           b = JSON.parse(input["Body"])
-  #           input["Body"] = JSON.stringify(b["jwt_attributes"])
+  outbound:
+    - type: js-outbound
+      configuration:
+        script: |
+            b = JSON.parse(input["Body"])
+            input["Body"] = JSON.stringify(b["result"])
+            input["Headers"].Add("Content-Type", "text/plain");       
 methods:
   - POST
 timeout: 180
