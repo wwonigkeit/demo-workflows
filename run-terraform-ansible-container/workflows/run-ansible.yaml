@@ -36,4 +36,4 @@ states:
               value: jq(.secrets.AWS_SECRET_ACCESS_KEY)
           # You can also pass the environmental variables as commmand-line arguments
           # - command: ansible-playbook provision-aws.yaml -vvv --extra-vars "aws_access_key=jq(.secrets.AWS_ACCESS_KEY_ID) aws_secret_key=jq(.secrets.AWS_SECRET_ACCESS_KEY) show_custom_stats=true stdout_callback=ansible.posix.json"
-         
+    transform: 'jq( { result: .return[4]."Output" } )'
