@@ -11,26 +11,34 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
-  # Store in the incoming playbook as a variable to use in subsequent states
+  # 
+  # The Ansible playbook is received from the API gateway as a base64 encoded object in the "body" of the request coming in. 
+  # Store in the incoming playbook as a variable to use in subsequent states using the "setter" Direktiv state.
+  #
   - id: store-config
     type: setter
     variables:
-    - key: provision-aws.yaml
-      scope: workflow
-      mimeType: text/plain
-      value: 'jq( .body.data | @base64d )'
+    - key: provision-aws.yaml               # <--- Name of the variable
+      scope: instance                       # <--- Store it only for the workflow instance
+      mimeType: text/plain                  # <--- Store it as plain text
+      value: 'jq( .body.data | @base64d )'  # <--- Convert the base64 body (playbook) into text
     transition: run-ansible
 
-  # Let's only run a single state which executes the ansible commands
+  #
+  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the variable created
+  # in the previous state.
+  #
+  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  #
   - id: run-ansible 
     type: action
     action:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: ansible
-      files: 
-      - key: provision-aws.yaml
-        scope: workflow
-        as: provision-aws.yaml
+      files:                           # <--- Create a file on the container
+      - key: provision-aws.yaml        # <--- Name of the variable
+        scope: instance                # <--- Context of the variable (instance)
+        as: provision-aws.yaml         # <--- Name of the file on the container file system
       input:
         data:
           commands:

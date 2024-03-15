@@ -11,16 +11,21 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
-  # Let's only run a single state which executes the terraform commands
+  #
+  # Let's only run a single state which executes the terrafom commands. The Terraform script is pulled from the local
+  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-terraform.tf.
+  #
+  # Note: using the official HashiCorp Terraform container
+  #
   - id: run-terraform 
     type: action
     action:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: terraform
-      files: 
-      - key: /run-terraform-ansible-container/scripts/provision-aws-terraform.tf
-        scope: file
-        as: provision-aws.tf
+      files:                                                                      # <--- Create a file on the container
+      - key: /run-terraform-ansible-container/scripts/provision-aws-terraform.tf  # <--- Location of the file
+        scope: file                                                               # <--- Context of the variable (file in repository)
+        as: provision-aws.tf                                                      # <--- Name of the file on the container file system        
       input:
         data:
           commands:
@@ -28,9 +33,18 @@ states:
           - command: terraform plan -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: terraform apply -auto-approve -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: cp terraform.tfstate out/workflow/terraform.tfstate
-    transform: 'jq({ init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" })'
+    transform: 'jq({ init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" })' # <--- Modify the output
     transition: print-state
 
+  #
+  # Let's return the output of the init, plan & apply commands + the tfstate object as a JSON object that looks like this:
+  # {
+  #   "init": "init-output",
+  #   "plan": "plan-output",
+  #   "apply": "apply-output",
+  #   "state": { state-object }
+  # }
+  #
   - id: print-state
     type: getter
     variables:

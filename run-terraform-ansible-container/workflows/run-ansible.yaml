@@ -11,16 +11,21 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
- # Let's only run a single state which executes the ansible commands
+  #
+  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the local
+  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-ansible.yaml.
+  #
+  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  #
   - id: run-ansible 
     type: action
     action:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: ansible
-      files: 
-      - key: /run-terraform-ansible-container/scripts/provision-aws-ansible.yaml
-        scope: file
-        as: provision-aws.yaml
+      files:                                                                      # <--- Create a file on the container
+      - key: /run-terraform-ansible-container/scripts/provision-aws-ansible.yaml  # <--- Location of the file
+        scope: file                                                               # <--- Context of the variable (file in repository)
+        as: provision-aws.yaml                                                    # <--- Name of the file on the container file system
       input:
         data:
           commands:

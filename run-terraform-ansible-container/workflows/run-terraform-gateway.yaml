@@ -1,6 +1,6 @@
 direktiv_api: workflow/v1
 
-description: Run a Docker Hub Terraform container without any changes
+description: Run a Docker Hub Terraform container without any changes, with the script received from the API gateway endpoint
 
 functions:
   # This is a simple Terraform container from hub.docker.com
@@ -11,24 +11,37 @@ functions:
     cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
+  #
+  # Let's only run a single state which executes the terrafom commands. The Terraform script is pulled from the local
+  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-terraform.tf.
+  #
+  # Note: using the official HashiCorp Terraform container
+  #
   - id: store-config
+    log: Store the terraform script as an internal variable
     type: setter
     variables:
     - key: provision-aws.tf
-      scope: workflow
+      scope: instance
       mimeType: text/plain
       value: 'jq( .body.data | @base64d )'
     transition: run-terraform
+    transform: 'jq( if .query_params | length > 0 then { gwoutput: (."query_params".return[0] | split(","))} else { gwoutput: [] } end )'
 
-  # Let's only run a single state which executes the terraform commands
-  - id: run-terraform 
+  #
+  # Let's only run a single state which executes the terrafom commands. The Terraform script is pulled from the variable created
+  # in the previous state.
+  #
+  # Note: using the official HashiCorp Terraform container
+  #
+  - id: run-terraform
     type: action
     action:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: terraform
       files: 
       - key: provision-aws.tf
-        scope: workflow
+        scope: instance
         as: provision-aws.tf
       input:
         data:
@@ -37,12 +50,32 @@ states:
           - command: terraform plan -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: terraform apply -auto-approve -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: cp terraform.tfstate out/workflow/terraform.tfstate
-    transform: 'jq({ init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" })'
-    transition: print-state
+    transform: 'jq( {. + { init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" })'
+    transition: check-url-params
 
-  - id: print-state
+  #
+  # Let's first check if the request had query_parameters set. This implies that the user wants specific output only.
+  #
+  - id: check-url-params
+    log: Decide what type of execution we're returning (depending on query_params)
+    type: switch
+    conditions:
+    - condition: 'jq((.gwoutput | length) > 0)'
+      transition: split-output
+    defaultTransition: return-all
+
+  #
+  # Let's return the output of the init, plan & apply commands + the tfstate object as a JSON object that looks like this:
+  # {
+  #   "init": "init-output",
+  #   "plan": "plan-output",
+  #   "apply": "apply-output",
+  #   "state": { state-object }
+  # }
+  #
+  - id: return-all
     type: getter
     variables:
     - key: terraform.tfstate
       scope: workflow
-    transform: 'jq(. + { state: .var."terraform.tfstate" })'
+    transform: 'jq(. + { state: .var."terraform.tfstate" } | del (.gwoutput))'
