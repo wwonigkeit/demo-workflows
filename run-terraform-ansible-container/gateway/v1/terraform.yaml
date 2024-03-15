@@ -21,7 +21,6 @@ plugins:
         script: |
             b = JSON.parse(input["Body"])
             if (Object.keys(b).length > 1) {
-              return
             } else {
               var filteredJsonLength = Object.keys(b).length;
               if (filteredJsonLength === 1 && b.hasOwnProperty("state")){
