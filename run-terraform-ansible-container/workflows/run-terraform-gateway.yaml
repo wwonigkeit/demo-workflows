@@ -51,21 +51,22 @@ states:
           - command: terraform apply -auto-approve -var="aws_key=jq(.secrets.AWS_ACCESS_KEY_ID)" -var="aws_secret=jq(.secrets.AWS_SECRET_ACCESS_KEY)"
           - command: cp terraform.tfstate out/workflow/terraform.tfstate
     transform: 'jq( . + { init: .return[0]."Output", plan: .return[1]."Output", apply: .return[2]."Output" } | del(.return))'
-    transition: return-all
-
-  # #
-  # # Let's first check if the request had query_parameters set. This implies that the user wants specific output only.
-  # #
-  # - id: check-url-params
-  #   log: Decide what type of execution we're returning (depending on query_params)
-  #   type: switch
-  #   conditions:
-  #   - condition: 'jq((.gwoutput | length) > 0)'
-  #     transition: split-output
-  #   defaultTransition: return-all
+    transition: get-tfstate
 
   #
-  # Let's return the output of the init, plan & apply commands + the tfstate object as a JSON object that looks like this:
+  # Get the tfstate from the Terraform script
+  #
+  - id: get-tfstate
+    type: getter
+    variables:
+    - key: terraform.tfstate
+      scope: workflow
+    transform: 'jq(. + { state: .var."terraform.tfstate" })'
+    transition: return-all
+
+  #
+  # Let's return the output of the init, plan & apply commands + the tfstate object as a JSON object that looks like this based
+  # on the query parameters originally provided:
   # {
   #   "init": "init-output",
   #   "plan": "plan-output",
@@ -74,24 +75,15 @@ states:
   # }
   #
   - id: return-all
-    type: getter
-    variables:
-    - key: terraform.tfstate
-      scope: workflow
-    transform: 'jq(. + { state: .var."terraform.tfstate" })'
+    type: noop
+    transform: |
+      js(
+        const filteredKeys = Object.keys(data).filter(key => data.gwoutput.includes(key));
+        const filteredJson = {};
+        filteredKeys.forEach(key => {
+          filteredJson[key] = data[key];
+        });
 
-  # #
-  # # Let's return the output of the init, plan & apply commands + the tfstate object as a JSON object that looks like this:
-  # # {
-  # #   "init": "init-output",
-  # #   "plan": "plan-output",
-  # #   "apply": "apply-output",
-  # #   "state": { state-object }
-  # # }
-  # #
-  # - id: split-output
-  #   type: getter
-  #   variables:
-  #   - key: terraform.tfstate
-  #     scope: workflow
-  #   transform: 'jq(. + { state: .var."terraform.tfstate" } | del (.gwoutput))'
+        data = filteredJson;
+        return data;
+      )
