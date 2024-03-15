@@ -24,7 +24,7 @@ plugins:
               input["Body"] = b
             } else {
               var filteredJsonLength = Object.keys(b).length;
-              if (filteredJsonLength === 1 && filteredJson.hasOwnProperty("state")){
+              if (filteredJsonLength === 1 && b.hasOwnProperty("state")){
                 input["Body"] = b["state"]
                 input["Headers"].Add("Content-Type", "application/json");
               } else {
