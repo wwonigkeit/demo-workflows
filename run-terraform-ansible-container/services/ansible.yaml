@@ -1,5 +1,0 @@
-direktiv_api: service/v1
-image: alpinelinux/ansible
-size: medium
-scale: 1
-cmd: /usr/share/direktiv/direktiv-cmd
