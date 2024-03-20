@@ -16,6 +16,7 @@ states:
   # Store in the incoming playbook as a variable to use in subsequent states using the "setter" Direktiv state.
   #
   - id: store-config
+    log: jq(.)
     type: setter
     variables:
     - key: provision-aws.yaml               # <--- Name of the variable
