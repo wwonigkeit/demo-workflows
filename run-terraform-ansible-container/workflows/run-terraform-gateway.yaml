@@ -62,7 +62,7 @@ states:
     variables:
     - key: terraform.tfstate
       scope: workflow
-    transform: 'jq(. + { state: .var."terraform.tfstate" } | (del.var) )'
+    transform: 'jq(. + { state: .var."terraform.tfstate" } | del (.var) )'
     transition: return-all
 
   #
