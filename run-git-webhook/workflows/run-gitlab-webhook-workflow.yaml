@@ -1,10 +1,10 @@
 direktiv_api: workflow/v1
 
-description: Execute an orchestration policy based on the GitHub webhook received from the gateway using a direct call to the workflow
+description: Execute an orchestration policy based on the GitLab webhook received from the gateway using a direct call to the workflow
 
 #
 # The start definition which starts the worklfow based on the webhook received from the
-# GitHub and directly called from the Direktiv API gateway.
+# GitLab and directly called from the Direktiv API gateway.
 #
 
 states:
@@ -13,3 +13,4 @@ states:
   - id: print-incoming
     type: noop
     log: jq(.)
+

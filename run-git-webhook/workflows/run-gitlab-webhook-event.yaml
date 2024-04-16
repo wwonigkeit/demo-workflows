@@ -1,10 +1,10 @@
 direktiv_api: workflow/v1
 
-description: Execute an orchestration policy based on the GitHub webhook converted into a CloudEvent
+description: Execute an orchestration policy based on the GitHub webhook
 
 #
 # The start definition which starts the worklfow based on the webhook received from the
-# GitHub and converted to a CloudEvent in Direktiv API gateway. Only start this workflow 
+# GitLab and converted to a CloudEvent in Direktiv API gateway. Only start this workflow 
 # based on a push event from the demo-workflows repository.
 #
 
@@ -12,14 +12,12 @@ start:
   type: event
   state: print-incoming
   event:
-    type: push
+    type: gitlab-push
     context:
-      source: "https://github.com/wwonigkeit/demo-workflows" 
-  
+      source: "https://github.com/wwonigkeit/demo-workflows"  
+ 
 states:
   # Print the incoming event information
   - id: print-incoming
     type: noop
     log: jq(.)
-    transition: sync-mirror
-

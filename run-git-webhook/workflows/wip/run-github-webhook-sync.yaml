@@ -1,0 +1,43 @@
+direktiv_api: workflow/v1
+
+description: Execute an orchestration policy based on the GitHub webhook
+
+#
+# The start definition which starts the worklfow based on the event received from the
+# GitHub. Only start this workflow based on a push event from the demo-workflows repository
+#
+start:
+  type: event
+  state: print-incoming
+  event:
+    type: push
+    context:
+      source: "https://github.com/wwonigkeit/demo-workflows" 
+
+functions:
+  # This is the Direktiv http-request container
+  - id: http-request
+    image: gcr.io/direktiv/functions/http-request:1.0
+    type: knative-workflow
+    size: small    
+ 
+states:
+  # Print the incoming event information
+  - id: print-incoming
+    type: noop
+    log: jq(.)
+    transition: sync-mirror
+
+  - id: sync-mirror
+    log: Get a token from GitHub to use in the runner registration
+    type: action
+    action:
+      function: http-request
+      secrets: ["DIREKTIV_URL", "DIREKTIV_TOKEN"]
+      input: 
+        debug: False
+        method: POST
+        url: 'https://jq(.secrets.DIREKTIV_URL)/api/namespaces/jq(.push.data.repository.name)/tree?op=sync-mirror&force=true'
+        headers:
+          Content-Type: "application/json"
+          Direktiv-Token: "jq(.secrets.DIREKTIV_TOKEN)"
