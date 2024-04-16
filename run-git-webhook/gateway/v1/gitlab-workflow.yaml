@@ -1,0 +1,30 @@
+direktiv_api: "endpoint/v1"
+#
+# This is a configuration used to receive GitLab events from a GitLab webhook. The request is authenticated 
+# using thje "gitlab-webhook-auth" plugin.  Note, this plugin is only available in the Direktiv Enterprise Edition.
+# The target for this gateway configuration is a workflow called run-gitlab-webhook-workflow.yaml in the demo-workflows namespace.
+#
+allow_anonymous: true
+path: "/v1/gitlab-workflow"
+timeout: 10
+methods:
+  - "POST"
+plugins:
+  target:
+    type: "target-flow"
+    configuration:
+      namespace: "demo-workflows"
+      flow: "/run-git-webhook/workflows/run-gitlab-webhook-workflow.yaml"
+      content_type: "application/json"
+  inbound:
+    - type: "request-convert"
+      configuration:
+        omit_headers: false
+        omit_queries: false
+        omit_body: false
+        omit_consumer: false
+  outbound: []
+  # auth:
+  #   - type: "gitlab-webhook-auth"
+  #     configuration:
+  #       secret: "api123"

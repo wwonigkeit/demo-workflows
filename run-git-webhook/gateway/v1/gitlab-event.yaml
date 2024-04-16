@@ -1,11 +1,11 @@
 direktiv_api: endpoint/v1
 #
-# This is a configuration used to receive GitHub events from a GitHub webhook. The request is authenticated 
-# using thje "github-webhook-auth" plugin. The target for this gateway configuration is a CloudEvent which is
-# broadcast to the demo-workflows namespace.
+# This is a configuration used to receive GitLab events from a GitLab webhook. The request is authenticated 
+# using thje "gitlab-webhook-auth" plugin. Note, this plugin is only available in the Direktiv Enterprise Edition.
+# The target for this gateway configuration is a CloudEvent which is broadcast to the demo-workflows namespace.
 #
 allow_anonymous: true
-path: /v1/github-event
+path: /v1/gitlab-event
 plugins:
   inbound:    
     - type: "request-convert"
@@ -31,10 +31,10 @@ plugins:
     type: "target-event"
     configuration:
       namespace: "demo-workflows"
-  auth:
-    - type: "github-webhook-auth"
-      configuration:
-        secret: "api123"      
+  # auth:
+  #   - type: "gilab-webhook-auth"
+  #     configuration:
+  #       secret: "api123"      
 methods:
   - POST
 timeout: 10

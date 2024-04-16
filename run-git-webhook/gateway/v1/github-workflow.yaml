@@ -1,4 +1,9 @@
 direktiv_api: "endpoint/v1"
+#
+# This is a configuration used to receive GitHub events from a GitHub webhook. The request is authenticated 
+# using thje "github-webhook-auth" plugin. The target for this gateway configuration is a workflow called
+# run-github-webhook-workflow.yaml in the demo-workflows namespace.
+#
 allow_anonymous: true
 path: "/v1/github-workflow"
 timeout: 10
