@@ -9,7 +9,7 @@ description: Execute an orchestration policy based on the GitLab webhook receive
 
 states:
   # 
-  # This is a simple state to show what the incoming webhook data from GitHub looks like
+  # This is a simple state to show what the incoming webhook data from GitLab looks like
   - id: print-incoming
     type: noop
     log: jq(.)
