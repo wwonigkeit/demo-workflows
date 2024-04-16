@@ -20,10 +20,10 @@ plugins:
             newbody = new Object();
             b = JSON.parse(input["Body"]);
             newbody["specversion"] = "1.0";
-            newbody["id"] = b.headers["X-Github-Delivery"][0];
-            newbody["source"] = b.body.repository.url;
-            newbody["type"] = b.headers["X-Github-Event"][0];
-            newbody["subject"] = b.body.repository.url;
+            newbody["id"] = b.headers["X-Gitlab-Event-Uuid"][0];
+            newbody["source"] = b.body.repository.git_http_url;
+            newbody["type"] = b.headers["X-Gitlab-Event"][0];
+            newbody["subject"] = b.body.repository.git_http_url;
             newbody["time"] = (new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString())
             newbody["data"] = b.body;
             input["Body"] = JSON.stringify(newbody);
