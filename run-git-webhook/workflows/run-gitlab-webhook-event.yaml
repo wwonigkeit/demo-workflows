@@ -1,6 +1,6 @@
 direktiv_api: workflow/v1
 
-description: Execute an orchestration policy based on the GitHub webhook
+description: Execute an orchestration policy based on the GitLab webhook converted into a CloudEvent
 
 #
 # The start definition which starts the worklfow based on the webhook received from the

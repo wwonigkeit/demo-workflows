@@ -21,5 +21,4 @@ states:
   - id: print-incoming
     type: noop
     log: jq(.)
-    transition: sync-mirror
 
