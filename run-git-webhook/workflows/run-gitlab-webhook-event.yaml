@@ -12,7 +12,7 @@ start:
   type: event
   state: print-incoming
   event:
-    type: "Push Hook"
+    type: gitlab-push-hook
     context:
       source: "https://gitlab.com/wwonigkeit/faas-demo.git"  
  

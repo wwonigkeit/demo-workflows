@@ -10,7 +10,7 @@ start:
   type: event
   state: print-incoming
   event:
-    type: push
+    type: github-push
     context:
       source: "https://github.com/wwonigkeit/demo-workflows" 
 
