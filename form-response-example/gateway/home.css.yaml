@@ -6,7 +6,7 @@ plugins:
     type: "target-namespace-file"
     configuration:
       namespace: "demo-workflows"
-      file: "/form-response-example/code/home.css"
+      file: "/form-response-example/code/html/home.css"
 methods:
   - GET
 timeout: 180
