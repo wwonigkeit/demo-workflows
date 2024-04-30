@@ -1,6 +1,6 @@
 direktiv_api: endpoint/v1
 allow_anonymous: true
-path: /dell_logo.svg
+path: /dell-logo.svg
 plugins:
   target:
     type: "target-namespace-file"
