@@ -88,9 +88,9 @@ function getVmsFromHttp() {
         return response.json();
     })
     .then(data => {
-        // console.log(data); // Handle the response data here
+        console.log(data); // Handle the response data here
         // document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
-        renderCheckBoxClusters(data)
+        // renderCheckBoxClusters(data)
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
