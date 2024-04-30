@@ -11,8 +11,8 @@ function renderCheckBoxVcenters(arr) {
 
 
 function getClustersFromHttp() {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const checkedValues = [];
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var checkedValues = [];
 
     checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
@@ -62,8 +62,10 @@ function renderCheckBoxClusters(vcenters) {
 }
 
 function getVmsFromHttp() {
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    const checkedValues = [];
+    var element = document.getElementById('dell-clusters');
+    var elements = element.querySelectorAll('input[type="checkbox"]');
+    // #const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var checkedValues = [];
 
     checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
