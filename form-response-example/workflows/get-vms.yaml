@@ -8,55 +8,55 @@ states:
     transform: |
       jq( . + {
                   "vms": [
-                        { 
-                          "vcenter1-cluster1": [ "vm1", "vm2"] 
-                        },
-                        { 
-                          "vcenter1-cluster2": [ "vm3", "vm4"] 
-                        },
-                        { 
-                          "vcenter1-cluster3": [ "vm5", "vm6"] 
-                        },
-                        { 
-                          "vcenter1-cluster4": [ "vm7", "vm8"] 
-                        },
-                        { 
-                          "vcenter2-cluster1": [ "vm9", "vm10"] 
-                        },
-                        { 
-                          "vcenter2-cluster2": [ "vm11", "vm12"] 
-                        },
-                        { 
-                          "vcenter2-cluster3": [ "vm13", "vm14"] 
-                        },
-                        { 
-                          "vcenter2-cluster4": [ "vm15", "vm16"] 
-                        },
-                        { 
-                          "vcenter3-cluster1": [ "vm17", "vm18"] 
-                        },
-                        { 
-                          "vcenter3-cluster2": [ "vm19", "vm20"] 
-                        },
-                        { 
-                          "vcenter3-cluster3": [ "vm21", "vm22"] 
-                        },
-                        { 
-                          "vcenter3-cluster4": [ "vm23", "vm24"] 
-                        },
-                        { 
-                          "vcenter4-cluster1": [ "vm25", "vm26"] 
-                        },
-                        { 
-                          "vcenter4-cluster2": [ "vm27", "vm28"] 
-                        },
-                        { 
-                          "vcenter4-cluster3": [ "vm29", "vm30"] 
-                        },
-                        { 
-                          "vcenter4-cluster4": [ "vm31", "vm32"] 
-                        },
-                  ]
+                          { 
+                            "vcenter1-cluster1": [ "vm1", "vm2"] 
+                          },
+                          { 
+                            "vcenter1-cluster2": [ "vm3", "vm4"] 
+                          },
+                          { 
+                            "vcenter1-cluster3": [ "vm5", "vm6"] 
+                          },
+                          { 
+                            "vcenter1-cluster4": [ "vm7", "vm8"] 
+                          },
+                          { 
+                            "vcenter2-cluster1": [ "vm9", "vm10"] 
+                          },
+                          { 
+                            "vcenter2-cluster2": [ "vm11", "vm12"] 
+                          },
+                          { 
+                            "vcenter2-cluster3": [ "vm13", "vm14"] 
+                          },
+                          { 
+                            "vcenter2-cluster4": [ "vm15", "vm16"] 
+                          },
+                          { 
+                            "vcenter3-cluster1": [ "vm17", "vm18"] 
+                          },
+                          { 
+                            "vcenter3-cluster2": [ "vm19", "vm20"] 
+                          },
+                          { 
+                            "vcenter3-cluster3": [ "vm21", "vm22"] 
+                          },
+                          { 
+                            "vcenter3-cluster4": [ "vm23", "vm24"] 
+                          },
+                          { 
+                            "vcenter4-cluster1": [ "vm25", "vm26"] 
+                          },
+                          { 
+                            "vcenter4-cluster2": [ "vm27", "vm28"] 
+                          },
+                          { 
+                            "vcenter4-cluster3": [ "vm29", "vm30"] 
+                          },
+                          { 
+                            "vcenter4-cluster4": [ "vm31", "vm32"] 
+                          }
+                        ]
               }
         )
     transition: return-clusters
