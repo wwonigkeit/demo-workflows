@@ -63,7 +63,7 @@ function renderCheckBoxClusters(vcenters) {
 
 function getVmsFromHttp() {
     var element = document.getElementById('dell-clusters');
-    var elements = element.querySelectorAll('input[type="checkbox"]');
+    var checkboxes = element.querySelectorAll('input[type="checkbox"]');
     // #const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     var checkedValues = [];
 
