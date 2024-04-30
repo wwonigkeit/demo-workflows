@@ -1,0 +1,27 @@
+direktiv_api: workflow/v1
+
+description: Return all the Clusters for the selected vCenter
+
+states:
+  - id: create-vcenter-array
+    type: noop
+    transform: |
+      jq( . + {
+                  "clusters": [
+                        { 
+                          "vcenter1": [ "vcenter1-cluster1", "vcenter1-cluster2", "vcenter1-cluster3", "vcenter1-cluster4"] 
+                        },
+                        { 
+                          "vcenter2": [ "vcenter2-cluster1", "vcenter2-cluster2", "vcenter2-cluster3", "vcenter2-cluster4"] 
+                        },
+                        { 
+                          "vcenter3": [ "vcenter3-cluster1", "vcenter3-cluster2", "vcenter3-cluster3", "vcenter3-cluster4"] 
+                        },
+                        { 
+                          "vcenter4": [ "vcenter4-cluster1", "vcenter4-cluster2", "vcenter4-cluster3", "vcenter4-cluster4"] 
+                        }
+                  ]
+              }
+        )
+    
+ 
