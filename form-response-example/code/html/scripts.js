@@ -48,7 +48,7 @@ function getClustersFromHttp() {
 
 function renderCheckBoxClusters(vcenters) {
     var returnStr = "";
-    data.clusters.forEach(function(item) {
+    vcenters.clusters.forEach(function(item) {
         // Iterate over each property in the current object
         for (var vcenter in item) {
             returnStr += '<input type="checkbox" class="checkbox-input" name="' + item[vcenter] + '" value="' + item[vcenter] + '" />' + item[vcenter] + '<br>';
