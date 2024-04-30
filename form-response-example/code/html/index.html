@@ -2,7 +2,7 @@
 
 <html>
     <header>
-        <img src="dell_logo.svg" alt="Logo">
+        <img src="dell-logo.svg" alt="Logo">
     </header>
 
     <head>
