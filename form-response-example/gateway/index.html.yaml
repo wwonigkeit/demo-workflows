@@ -3,24 +3,24 @@ allow_anonymous: true
 path: /index.html
 plugins:
   target:
-    # type: "target-namespace-file"
-    # configuration:
-    #   namespace: "demo-workflows"
-    #   file: "/form-response-example/code/html/index.html"
-    #   content_type: "text/html"
-    type: target-flow
+    type: "target-namespace-file"
     configuration:
-      namespace: demo-workflows
-      flow: /form-response-example/workflows/get-vcenters.yaml
+      namespace: "demo-workflows"
+      file: "/form-response-example/code/html/index.html"
       content_type: "text/html"
-  outbound:
-    - type: js-outbound
-      configuration:
-        script: |
-            b = JSON.parse(input["Body"])
+  #   type: target-flow
+  #   configuration:
+  #     namespace: demo-workflows
+  #     flow: /form-response-example/workflows/get-vcenters.yaml
+  #     content_type: "text/html"
+  # outbound:
+  #   - type: js-outbound
+  #     configuration:
+  #       script: |
+  #           b = JSON.parse(input["Body"])
 
-            input["Body"] = (b["result"])
-            input["Headers"].Add("Content-Type", "text/html");
+  #           input["Body"] = (b["result"])
+  #           input["Headers"].Add("Content-Type", "text/html");
 methods:
   - GET
 timeout: 180
