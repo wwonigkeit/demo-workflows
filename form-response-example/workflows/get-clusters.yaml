@@ -23,5 +23,8 @@ states:
                   ]
               }
         )
-    
- 
+    transition: return-clusters
+
+  - id: return-clusters
+    type: noop
+    transform: 'jq({ clusters: [.vcenters[] as $vcenter | .clusters[] | select(has($vcenter)) | { ($vcenter): .[$vcenter] }] })'
