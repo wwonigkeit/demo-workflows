@@ -39,7 +39,7 @@ function getClustersFromHttp() {
     .then(data => {
         // console.log(data); // Handle the response data here
         // document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
-        renderCheckBoxClusters(data.clusters)
+        renderCheckBoxClusters(data)
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
@@ -47,17 +47,14 @@ function getClustersFromHttp() {
 }
 
 function renderCheckBoxClusters(vcenters) {
-    // var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
     var returnStr = "";
-    //console.log("Did we even get here?");
-    console.log(vcenters);
-    vcenters.forEach(arr => {
-        console.log(arr);
-        for (i = 0; i < arr.length; i++) {
-            // console.log(arr[i]);
-            returnStr += '<input type="checkbox" class="checkbox-input" name="' + arr[i] + '" value="' + arr[i] + '" />' + arr[i] + '<br>';
+    data.clusters.forEach(function(item) {
+        // Iterate over each property in the current object
+        for (var vcenter in item) {
+            returnStr += '<input type="checkbox" class="checkbox-input" name="' + item[vcenter] + '" value="' + item[vcenter] + '" />' + item[vcenter] + '<br>';
+            
         }
-    })
+     })
 
     // returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
     document.getElementById("dell-clusters").innerHTML=returnStr;
