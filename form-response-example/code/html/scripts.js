@@ -12,7 +12,6 @@ function renderCheckBoxVcenters(arr) {
 
 function getClustersFromHttp() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    var output = document.getElementById('dell-clusters');
     const checkedValues = [];
 
     checkboxes.forEach((checkbox) => {
@@ -35,14 +34,24 @@ function getClustersFromHttp() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // output.innerHTML = response.json(); 
         return response.json();
     })
     .then(data => {
         console.log(data); // Handle the response data here
-        document.getElementById("dell-clusters").innerHTML = JSON.stringify(data);
+        document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
+        //renderCheckBoxClusters(data.clusters)
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
     });
+}
+
+function renderCheckBoxClusters(jsonData) {
+    // var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
+    var returnStr = "";
+    for (i = 0; i < arr.length; i++) {
+        returnStr += '<input type="checkbox" class="checkbox-input" name="' + arr[i] + '" value="' + arr[i] + '" />' + arr[i] + '<br>';
+    }
+    returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
+    document.getElementById("dell-vcenter").innerHTML=returnStr;
 }
