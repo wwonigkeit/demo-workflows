@@ -57,6 +57,42 @@ function renderCheckBoxClusters(vcenters) {
         }
      })
 
-    // returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
+    returnStr += '<button class="button" type="button" onclick="getVmsFromHttp()">Get Checked Values</button>'
     document.getElementById("dell-clusters").innerHTML=returnStr;
+}
+
+function getVmsFromHttp() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const checkedValues = [];
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            checkedValues.push(checkbox.value);
+        }
+    });
+    
+    console.log(checkedValues);
+
+    fetch('https://internal.direktiv.io/ns/demo-workflows/get-vms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clusters: checkedValues })
+    })
+
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // console.log(data); // Handle the response data here
+        // document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
+        renderCheckBoxClusters(data)
+    })
+    .catch(error => {
+        console.error('There was a problem with the request:', error);
+    });
 }
