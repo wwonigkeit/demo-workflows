@@ -37,7 +37,7 @@ states:
       input: 
         debug: False
         method: POST
-        url: 'https://jq(.secrets.DIREKTIV_URL)/api/namespaces/jq(.push.data.repository.name)/tree?op=sync-mirror&force=true'
+        url: 'https://jq(.secrets.DIREKTIV_URL)/api/namespaces/jq(.github-push.data.repository.name)/tree?op=sync-mirror&force=true'
         headers:
           Content-Type: "application/json"
           Direktiv-Token: "jq(.secrets.DIREKTIV_TOKEN)"
