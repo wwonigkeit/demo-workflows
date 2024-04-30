@@ -37,7 +37,7 @@ function getClustersFromHttp() {
         return response.json();
     })
     .then(data => {
-        console.log(data); // Handle the response data here
+        // console.log(data); // Handle the response data here
         // document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
         renderCheckBoxClusters(data.clusters)
     })
@@ -49,6 +49,7 @@ function getClustersFromHttp() {
 function renderCheckBoxClusters(vcenters) {
     // var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
     var returnStr = "";
+    console.log("Did we even get here?");
     vcenters.forEach(arr => {
         for (i = 0; i < arr.length; i++) {
             console.log(arr[i]);
