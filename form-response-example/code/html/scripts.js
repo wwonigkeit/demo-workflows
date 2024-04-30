@@ -35,11 +35,12 @@ function getClustersFromHttp() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        output.innerHTML = response.json(); 
+        // output.innerHTML = response.json(); 
         return response.json();
     })
     .then(data => {
         console.log(data); // Handle the response data here
+        document.getElementById("dell-clusters").innerHTML = JSON.stringify(data);
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
