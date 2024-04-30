@@ -6,80 +6,6 @@
     </header>
 
     <head>
-        <style>
-            header {
-                background-color: #000000;
-                padding: 10px;
-                text-align: center;
-            }
-            img {
-                height: 50px; /* Adjust the height as needed */
-            }
-            .grid-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr; /* Three columns with equal width */
-                grid-gap: 10px; /* Gap between grid items */
-            }
-
-            .grid-item-black {
-                background-color: black;
-                padding: 20px;
-                text-align: center;
-                color: white;
-                font-family: Arial, sans-serif;
-            }
-
-            .grid-item-white {
-                background-color: white;
-                padding: 20px;
-                text-align: center;
-                color: black;
-                font-family: Arial, sans-serif;
-            }
-
-            .checkbox-container {
-                display: flex;
-                align-items: center;
-            }
-            
-            .checkbox-input {
-                margin-right: 10px;
-                font-family: Arial, sans-serif;
-            }
-
-            input[type="checkbox"] {
-                appearance: none;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-                width: 20px; /* Set custom width */
-                height: 20px; /* Set custom height */
-                border: 2px solid #333; /* Add border */
-                border-radius: 5px; /* Rounded corners */
-                background-color: #fff; /* Checkbox background color */
-                cursor: pointer; /* Cursor on hover */
-                vertical-align: middle;
-            }
-
-            /* Custom checkbox when checked */
-            input[type="checkbox"]:checked {
-                background-color: #4CAF50; /* Green background when checked */
-            }
-
-            .button {
-                background-color: black;
-                color: white;
-                border: none;
-                font-family: Arial, sans-serif;
-                padding: 7px 16px;
-                text-align: center;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-        </style>
-
         <meta charset="utf-8">
 
         <title>Get Virtual Machine Information</title>
@@ -114,7 +40,42 @@
                 </form>              
             </div>
             <div class="grid-item-black">Step 2: select Cluster:</div>
-            <div class="grid-item-white">placeholder for clusters</div>
+            <div class="grid-item-white">
+                <div class="dropdown" data-control="checkbox-dropdown">
+                <label class="dropdown-label">Select</label>
+                
+                <div class="dropdown-list">
+                    <a href="#" data-toggle="check-all" class="dropdown-option">
+                    Check All  
+                    </a>
+                    
+                    <label class="dropdown-option">
+                    <input type="checkbox" name="dropdown-group" value="Selection 1" />
+                    Selection One
+                    </label>
+                    
+                    <label class="dropdown-option">
+                    <input type="checkbox" name="dropdown-group" value="Selection 2" />
+                    Selection Two
+                    </label>
+                    
+                    <label class="dropdown-option">
+                    <input type="checkbox" name="dropdown-group" value="Selection 3" />
+                    Selection Three
+                    </label>
+                    
+                    <label class="dropdown-option">
+                    <input type="checkbox" name="dropdown-group" value="Selection 4" />
+                    Selection Four
+                    </label>
+                    
+                    <label class="dropdown-option">
+                    <input type="checkbox" name="dropdown-group" value="Selection 5" />
+                    Selection Five
+                    </label>      
+                </div>
+                </div>
+            </div>
             <div class="grid-item-black">Step 3: select Virtual Machine:</div>
             <div class="grid-item-white">placeholder for vms</div>
         </div>

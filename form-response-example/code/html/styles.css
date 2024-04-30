@@ -1,0 +1,145 @@
+/* Place your CSS styles in this file */
+
+h1 {
+    text-align: center;
+    font-family: "Source Sans Pro", sans-serif;
+    font-weight: normal;
+}
+
+header {
+    background-color: #000000;
+    padding: 10px;
+    text-align: center;
+}
+
+img {
+    height: 50px; /* Adjust the height as needed */
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Three columns with equal width */
+    grid-gap: 10px; /* Gap between grid items */
+}
+
+.grid-item-black {
+    background-color: black;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.grid-item-white {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    color: black;
+    font-family: Arial, sans-serif;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-input {
+    margin-right: 10px;
+    font-family: Arial, sans-serif;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px; /* Set custom width */
+    height: 20px; /* Set custom height */
+    border: 2px solid #333; /* Add border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fff; /* Checkbox background color */
+    cursor: pointer; /* Cursor on hover */
+    vertical-align: middle;
+}
+
+/* Custom checkbox when checked */
+input[type="checkbox"]:checked {
+    background-color: #4CAF50; /* Green background when checked */
+}
+
+.button {
+    background-color: black;
+    color: white;
+    border: none;
+    font-family: Arial, sans-serif;
+    padding: 7px 16px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.dropdown {
+  position: relative;
+  font-size: 14px;
+  color: #333;
+
+  .dropdown-list {
+    padding: 12px;
+    background: #fff;
+    position: absolute;
+    top: 30px;
+    left: 2px;
+    right: 2px;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+    transform-origin: 50% 0;
+    transform: scale(1, 0);
+    transition: transform 0.15s ease-in-out 0.15s;
+    max-height: 66vh;
+    overflow-y: scroll;
+  }
+
+  .dropdown-option {
+    display: block;
+    padding: 8px 12px;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+  }
+
+  .dropdown-label {
+    display: block;
+    height: 30px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    line-height: 1;
+    cursor: pointer;
+
+    &:before {
+      content: "▼";
+      float: right;
+    }
+  }
+
+  &.on {
+    .dropdown-list {
+      transform: scale(1, 1);
+      transition-delay: 0s;
+
+      .dropdown-option {
+        opacity: 1;
+        transition-delay: 0.2s;
+      }
+    }
+
+    .dropdown-label:before {
+      content: "▲";
+    }
+  }
+
+  [type="checkbox"] {
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
+  }
+}
