@@ -1,9 +1,9 @@
 direktiv_api: workflow/v1
 
-description: Return all the Clusters for the selected vCenter
+description: Return all the Vms for the selected Cluster
 
 states:
-  - id: create-vcenter-array
+  - id: create-vm-array
     type: noop
     transform: |
       jq( . + {
