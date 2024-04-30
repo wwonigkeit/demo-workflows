@@ -24,10 +24,11 @@ function getClustersFromHttp() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        output.innerHTML = response.json(); 
+        // output.innerHTML = response.json(); 
         return response.json();
     })
     .then(data => {
+        output.innerHTML = data
         console.log(data); // Handle the response data here
     })
     .catch(error => {
