@@ -90,11 +90,26 @@ function getVmsFromHttp() {
         return response.json();
     })
     .then(data => {
-        console.log(data); // Handle the response data here
+        // console.log(data); // Handle the response data here
         // document.getElementById("dell-clusters").innerHTML = JSON.stringify(data.clusters);
-        // renderCheckBoxClusters(data)
+        renderCheckBoxVms(data)
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
     });
+}
+
+function renderCheckBoxVms(data) {
+    var returnStr = "";
+    data.vms.forEach(function(cluster) {
+        // Iterate over each property in the current object
+        for (var key in cluster) {
+            cluster[key].forEach(function(vm) {
+                returnStr += '<input type="checkbox" class="checkbox-input" name="' + vm + '" value="' + vm + '" />' + vm + '<br>';
+            })
+        }
+     })
+
+    // returnStr += '<button class="button" type="button" onclick="getVmsFromHttp()">Get Checked Values</button>'
+    document.getElementById("dell-vms").innerHTML=returnStr;
 }
