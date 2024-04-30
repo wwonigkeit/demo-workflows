@@ -6,7 +6,7 @@ plugins:
     type: "target-namespace-file"
     configuration:
       namespace: "demo-workflows"
-      file: "/form-response-example/code/html/dell_logo.svg"
+      file: "/form-response-example/code/html/dell-logo.svg"
       content_type: "image/svg+xml"
 methods:
   - GET
