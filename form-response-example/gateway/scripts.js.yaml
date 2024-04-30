@@ -1,12 +1,12 @@
 direktiv_api: endpoint/v1
 allow_anonymous: true
-path: /home.css
+path: /scripts.js
 plugins:
   target:
     type: "target-namespace-file"
     configuration:
       namespace: "demo-workflows"
-      file: "/form-response-example/code/html/home.css"
+      file: "/form-response-example/code/html/scripts.js"
       content_type: "text/css"
 methods:
   - GET
