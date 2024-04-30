@@ -24,11 +24,11 @@ states:
     action:
       function: template-function
       files:
-      - key: /form-response-example/code/html/index.tpl
+      - key: /form-response-example/code/html/index.mustache
         scope: file
-        as: index.tpl
+        as: index.mustache
       input: 
-        template: index.tpl
+        template: index.mustache
         data: jq(.)
     transform: jq(.return.mustache)
  
