@@ -27,21 +27,13 @@
             <div class="grid-item-white" id="dell-vcenter">
                 <form id="checkboxForm">
                     <script>
-                        var a = document.getElementById("dell-vcenter");
-                        var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
-                        var returnStr = "";
-                        for (i = 0; i < arr.length; i++) {
-                            returnStr += '<input type="checkbox" class="checkbox-input" name="' + arr[i] + '" value="' + arr[i] + '" />' + arr[i] + '<br>';
-                        }
-                        //a.innerHTML = returnStr;
-                        returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
-                        document.getElementById("dell-vcenter").innerHTML=returnStr;
+                        renderCheckBoxVcenters(["vcenter1", "vcenter2", "vcenter3", "vcenter4"])
                     </script>
                 </form>
             </div>
             <div class="grid-item-black">Step 2: select Cluster:</div>
             <div class="grid-item-white" id="dell-clusters">
-                
+
             </div>
             <div class="grid-item-black">Step 3: select Virtual Machine:</div>
             <div class="grid-item-white">placeholder for vms</div>

@@ -1,4 +1,15 @@
 /* Place your JavaScript in this file */
+function renderCheckBoxVcenters(arr) {
+    // var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
+    var returnStr = "";
+    for (i = 0; i < arr.length; i++) {
+        returnStr += '<input type="checkbox" class="checkbox-input" name="' + arr[i] + '" value="' + arr[i] + '" />' + arr[i] + '<br>';
+    }
+    returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
+    document.getElementById("dell-vcenter").innerHTML=returnStr;
+}
+
+
 function getClustersFromHttp() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     var output = document.getElementById('dell-clusters');
@@ -24,14 +35,13 @@ function getClustersFromHttp() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // output.innerHTML = response.json(); 
+        output.innerHTML = response.json(); 
         return response.json();
     })
     .then(data => {
-        output.innerHTML = JSON.stringify(data)
         console.log(data); // Handle the response data here
     })
     .catch(error => {
         console.error('There was a problem with the request:', error);
-    });                        
+    });
 }
