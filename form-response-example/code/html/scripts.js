@@ -50,7 +50,9 @@ function renderCheckBoxClusters(vcenters) {
     // var arr = ["vcenter1", "vcenter2", "vcenter3", "vcenter4"];
     var returnStr = "";
     console.log("Did we even get here?");
+    console.log(vcenters);
     vcenters.forEach(arr => {
+        console.log(arr);
         for (i = 0; i < arr.length; i++) {
             console.log(arr[i]);
             returnStr += '<input type="checkbox" class="checkbox-input" name="' + arr[i] + '" value="' + arr[i] + '" />' + arr[i] + '<br>';
