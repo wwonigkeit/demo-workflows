@@ -111,42 +111,7 @@
                         returnStr += '<button class="button" type="button" onclick="getClustersFromHttp()">Get Checked Values</button>'
                         document.getElementById("dell-vcenter").innerHTML=returnStr;
                     </script>
-                </form>
-                <script>
-                    function getClustersFromHttp() {
-                        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                        const checkedValues = [];
-
-                        checkboxes.forEach((checkbox) => {
-                            if (checkbox.checked) {
-                                checkedValues.push(checkbox.value);
-                            }
-                        });
-                        
-                        console.log(checkedValues);
-
-                        fetch('https://internal.direktiv.io/ns/demo-workflows/get-clusters', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ vcenters: checkedValues })
-                        })
-
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            console.log(data); // Handle the response data here
-                        })
-                        .catch(error => {
-                            console.error('There was a problem with the request:', error);
-                        });                        
-                    }
-                </script>                
+                </form>              
             </div>
             <div class="grid-item-black">Step 2: select Cluster:</div>
             <div class="grid-item-white">placeholder for clusters</div>
