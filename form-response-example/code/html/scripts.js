@@ -28,7 +28,7 @@ function getClustersFromHttp() {
         return response.json();
     })
     .then(data => {
-        output.innerHTML = data
+        output.innerHTML = JSON.stringify(data)
         console.log(data); // Handle the response data here
     })
     .catch(error => {
