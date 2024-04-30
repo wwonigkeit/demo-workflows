@@ -51,8 +51,9 @@ function renderCheckBoxClusters(vcenters) {
     vcenters.clusters.forEach(function(item) {
         // Iterate over each property in the current object
         for (var vcenter in item) {
-            returnStr += '<input type="checkbox" class="checkbox-input" name="' + item[vcenter] + '" value="' + item[vcenter] + '" />' + item[vcenter] + '<br>';
-            
+            item[vcenter].forEach(function(cluster) { 
+                returnStr += '<input type="checkbox" class="checkbox-input" name="' + cluster + '" value="' + cluster + '" />' + cluster + '<br>';
+            })
         }
      })
 
