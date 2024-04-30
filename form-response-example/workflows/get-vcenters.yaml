@@ -11,10 +11,7 @@ functions:
 states:
   - id: create-vcenter-array
     type: noop
-    transform: |
-      jq (
-        { vcenters: ["vcenter1","vcenter2","vcenter3","vcenter4"] }
-      )
+    transform: 'jq( { "vcenters": ["vcenter1","vcenter2","vcenter3","vcenter4"] })'
     transition: create-html-template
 
   #
@@ -27,10 +24,11 @@ states:
     action:
       function: template-function
       files:
-      - key: /code/html/index.tpl
-        scope: workflow
+      - key: /form-response-example/code/html/index.tpl
+        scope: file
         as: index.tpl
       input: 
         template: index.tpl
         data: jq(.)
+    transform: jq(.return.mustache)
  
