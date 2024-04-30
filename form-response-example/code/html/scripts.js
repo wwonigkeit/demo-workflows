@@ -1,6 +1,7 @@
 /* Place your JavaScript in this file */
 function getClustersFromHttp() {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    var output = document.getElementById('dell-clusters');
     const checkedValues = [];
 
     checkboxes.forEach((checkbox) => {
@@ -23,6 +24,7 @@ function getClustersFromHttp() {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        output.innerHTML = response.json(); 
         return response.json();
     })
     .then(data => {
@@ -32,4 +34,3 @@ function getClustersFromHttp() {
         console.error('There was a problem with the request:', error);
     });                        
 }
-
