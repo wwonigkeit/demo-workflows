@@ -1,0 +1,36 @@
+direktiv_api: workflow/v1
+
+description: Return all the vCenters
+
+functions:
+  # Create an website template using mustache
+  - id: template-function
+    image: gcr.io/direktiv/functions/mustache:1.0
+    type: knative-workflow
+
+states:
+  - id: create-vcenter-array
+    type: noop
+    transform: |
+      jq (
+        { vcenters: ["vcenter1","vcenter2","vcenter3","vcenter4"] }
+      )
+    transition: create-html-template
+
+  #
+  # Create the email content using an email template 
+  #
+  - id: create-html-template
+    # log: jq(.)
+    log: Creating the email template
+    type: action
+    action:
+      function: template-function
+      files:
+      - key: /code/html/index.tpl
+        scope: workflow
+        as: index.tpl
+      input: 
+        template: index.tpl
+        data: jq(.)
+ 

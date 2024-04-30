@@ -3,10 +3,15 @@ allow_anonymous: true
 path: /index.html
 plugins:
   target:
-    type: "target-namespace-file"
+    # type: "target-namespace-file"
+    # configuration:
+    #   namespace: "demo-workflows"
+    #   file: "/form-response-example/code/html/index.html"
+    #   content_type: "text/html"
+    type: target-flow
     configuration:
-      namespace: "demo-workflows"
-      file: "/form-response-example/code/html/index.html"
+      namespace: demo-workflows
+      flow: /form-response-example/workflows/get-vcenters.yaml
       content_type: "text/html"
 methods:
   - GET

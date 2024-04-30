@@ -30,7 +30,8 @@
         <a href="#" class="u-btn u-btn-2">
           <select name="dell-vcenter" id="dell-vcenter"></select>
           <script>
-             var arr = ["Courses here","Frontend Training","Backend Training","Java Training","Ethical Hacking"];
+             // var arr = ["Courses here","Frontend Training","Backend Training","Java Training","Ethical Hacking"];
+             var arr = {{vcenters}}
              var options="";
              arr.map((op,i)=>{
                 options+=`<option value="${op}" id="${i}" style="border-radius: 5px;"">${op}</option>`
