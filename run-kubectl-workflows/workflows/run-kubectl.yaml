@@ -29,15 +29,16 @@ states:
       #
       - key: /run-kubectl-workflows/data/kubectl.yaml                             # <--- Location of the file from the GitHUb repository
         scope: file                                                               # <--- Context of the variable (file in repository)
-        as: kubeconfig                                                            # <--- Name of the file on the container file system
+        as: kubeconfig-file                                                       # <--- Name of the file on the container file system
       #
       # OR ... you can use an internally stored variable for this purpose
       #
       - key: KUBECONFIG                                                           # <--- Name of the variable
         scope: namespace                                                          # <--- Context of the variable (file in repository)
-        as: kubeconfig
+        as: kubeconfig-variable                                                   # <--- Name of the file on the container file system
       input:
         data:
           commands:
-          - command: kubectl get pods
+          - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
+          - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
     # transform: 'jq( { result: .return[4]."Output" } )'
