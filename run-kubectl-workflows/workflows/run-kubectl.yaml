@@ -1,0 +1,43 @@
+direktiv_api: workflow/v1
+
+description: Run kubectl command with a kubeconfig file stored as a variable
+
+functions:
+  # This is a simple Ansible container from hub.docker.com
+  - id: kubectl
+    image: bitnami/kubectl
+    type: knative-workflow
+    size: small
+    cmd: /usr/share/direktiv/direktiv-cmd
+ 
+states:
+  #
+  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the local
+  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-ansible.yaml.
+  #
+  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  #
+  - id: run-kubectl 
+    type: action
+    action:
+      secrets: ["KUBECONFIG"]
+      function: kubectl
+      files:                                                                      # <--- Create a file on the container
+      #
+      # This section can create the kubeconfig / config file based on a file in the GitHUb repository - created when you use the GitHub
+      # sync capability
+      #
+      - key: /run-kubectl-workflows/data/kubectl.yaml                             # <--- Location of the file from the GitHUb repository
+        scope: file                                                               # <--- Context of the variable (file in repository)
+        as: kubeconfig                                                            # <--- Name of the file on the container file system
+      #
+      # OR ... you can use an internally stored variable for this purpose
+      #
+      - key: KUBECONFIG                                                           # <--- Name of the variable
+        scope: namespace                                                          # <--- Context of the variable (file in repository)
+        as: kubeconfig
+      input:
+        data:
+          commands:
+          - command: kubectl get pods
+    # transform: 'jq( { result: .return[4]."Output" } )'
