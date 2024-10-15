@@ -63,9 +63,9 @@ states:
           - command: curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
           - command: chmod +x ./kubectl
           - command: mv ./kubectl /usr/local/bin
-          #- command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
-          #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-          #- command: /bin/bash kubectl_script_variable.sh kubeconfig-file
-          #- command: /bin/bash kubectl_script_file.sh kubeconfig-variable
+          - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
+          - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
+          - command: /bin/bash kubectl_script_variable.sh kubeconfig-file
+          - command: /bin/bash kubectl_script_file.sh kubeconfig-variable
           - command: /bin/bash kubectl_script_ondemand.sh kubeconfig-variable
     # transform: 'jq( { result: .return[4]."Output" } )'
