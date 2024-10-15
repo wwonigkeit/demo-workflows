@@ -4,21 +4,16 @@ description: Run kubectl command with a kubeconfig file stored as a variable
 
 functions:
   # This is a simple Ansible container from hub.docker.com
-  # - id: kubectl
-  #   image: bitnami/kubectl
-  #   type: knative-workflow
-  #   size: small
-  #   cmd: /usr/share/direktiv/direktiv-cmd
   - id: kubectl
-    image: gcr.io/direktiv/functions/kubectl:1.0
+    image: apline
     type: knative-workflow
+    size: small
+    cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
   #
-  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the local
-  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-ansible.yaml.
-  #
-  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  # We're going to run a single workflow state that installs the kubectl command on alpine Linux and then
+  # runs all the commands we need. You can always build this as a service as well
   #
   - id: run-kubectl 
     type: action
@@ -46,22 +41,23 @@ states:
         scope: namespace                                                          # <--- Context of the variable (file in repository)
         as: kubectl_script.sh                                                     # <--- Name of the file on the container file system
       input:
-        # files:
-        # - name: kubectl_script.sh
-        #   content: | # (or is this data?)
-        #     #!/bin/bash
+        files:
+        - name: kubectl_script_ondemand.sh
+          content: | # (or is this data?)
+              #!/bin/bash
 
-        #     echo "Hello World"
-        #   permission: 0755
-        # data:
-        #   commands:
-        #   - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
-        #   - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-        #   - command: ./version.sh
-        #   - command: ./kubectl_script.sh
-        commands:
-        #- command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
-        #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-        - command: /bin/bash kubectl_script.sh kubeconfig-file
-        - command: /bin/bash kubectl_script.sh kubeconfig-variable
+              for i in {1..10}; do
+                  VERSION=$(kubectl get nodes --kubeconfig="$1" | grep -i ip | awk '{print $5}')
+                  echo "$i : $VERSION"
+              done
+          permission: 0755
+        data:
+          commands:
+          - command: curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+          - command: chmod +x ./kubectl
+          - command: mv ./kubectl /usr/local/bin
+          - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
+          #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
+          #- command: ./version.sh
+          #- command: ./kubectl_script.sh
     # transform: 'jq( { result: .return[4]."Output" } )'
