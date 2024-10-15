@@ -42,17 +42,17 @@ states:
       #
       # Pull script from variable
       #
-      - key: version.sh                                                           # <--- Name of the variable
+      - key: kubectl_script.sh                                                    # <--- Name of the variable
         scope: namespace                                                          # <--- Context of the variable (file in repository)
-        as: version.sh                                                   # <--- Name of the file on the container file system
+        as: kubectl_script.sh                                                     # <--- Name of the file on the container file system
       input:
-        files:
-        - name: kubectl_script.sh
-          content: |
-            #!/bin/bash
+        # files:
+        # - name: kubectl_script.sh
+        #   content: | # (or is this data?)
+        #     #!/bin/bash
 
-            echo "Hello World"
-          permission: 0755
+        #     echo "Hello World"
+        #   permission: 0755
         # data:
         #   commands:
         #   - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
@@ -62,6 +62,5 @@ states:
         commands:
         - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
         - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-        - command: ./kubectl_script.sh
-        - command: ./version.sh
+        #- command: ./kubectl_script.sh
     # transform: 'jq( { result: .return[4]."Output" } )'
