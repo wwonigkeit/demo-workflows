@@ -37,8 +37,16 @@ states:
         scope: namespace                                                          # <--- Context of the variable (file in repository)
         as: kubeconfig-variable                                                   # <--- Name of the file on the container file system
       input:
+        files:
+        - name: kubectl_script.sh
+          content: |
+            #!/bin/bash
+
+            echo "Hello World"
+          permission: 0755
         data:
           commands:
           - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
           - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
+          - command: ./kubectl_script.sh
     # transform: 'jq( { result: .return[4]."Output" } )'
