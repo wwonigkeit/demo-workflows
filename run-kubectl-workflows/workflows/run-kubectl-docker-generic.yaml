@@ -59,7 +59,7 @@ states:
           permission: 0755
         data:
           commands:
-          - command: apk --no-cache add curl
+          - command: apk --no-cache add curl bash
           - command: curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
           - command: chmod +x ./kubectl
           - command: mv ./kubectl /usr/local/bin
