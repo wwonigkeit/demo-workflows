@@ -48,5 +48,6 @@ states:
           commands:
           #- command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
           #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-          #- command: ./kubectl_script.sh
+          - command: |
+                ./kubectl_script.sh
     # transform: 'jq( { result: .return[4]."Output" } )'
