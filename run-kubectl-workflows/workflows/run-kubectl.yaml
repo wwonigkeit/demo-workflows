@@ -4,11 +4,14 @@ description: Run kubectl command with a kubeconfig file stored as a variable
 
 functions:
   # This is a simple Ansible container from hub.docker.com
+  # - id: kubectl
+  #   image: bitnami/kubectl
+  #   type: knative-workflow
+  #   size: small
+  #   cmd: /usr/share/direktiv/direktiv-cmd
   - id: kubectl
-    image: bitnami/kubectl
+    image: gcr.io/direktiv/functions/kubectl:1.0
     type: knative-workflow
-    size: small
-    cmd: /usr/share/direktiv/direktiv-cmd
  
 states:
   #
