@@ -18,7 +18,7 @@ states:
   - id: run-kubectl 
     type: action
     action:
-      secrets: ["KUBECONFIG"]
+      secrets: ["KUBECONFIG"]                                                     # <--- Stored the config file from K3s as a secret
       function: kubectl
       files:                                                                      # <--- Create a file on the container
       #
@@ -39,7 +39,13 @@ states:
       #
       - key: kubectl_script.sh                                                    # <--- Name of the variable
         scope: namespace                                                          # <--- Context of the variable (file in repository)
-        as: kubectl_script.sh                                                     # <--- Name of the file on the container file system
+        as: kubectl_script_variable.sh                                                     # <--- Name of the file on the container file system
+      #
+      # OR ...  you can pull script from GitHUb repository
+      #
+      - key: /run-kubectl-workflows/data/kubectl_script.sh                        # <--- Location of the file from the GitHUb repository
+        scope: file                                                               # <--- Context of the variable (file in repository)
+        as: kubectl_script_file.sh                                                # <--- Name of the file on the container file system
       input:
         files:
         - name: kubectl_script_ondemand.sh
@@ -57,8 +63,9 @@ states:
           - command: curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
           - command: chmod +x ./kubectl
           - command: mv ./kubectl /usr/local/bin
-          - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
+          #- command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
           #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-          #- command: ./version.sh
-          #- command: ./kubectl_script.sh
+          #- command: /bin/bash kubectl_script_variable.sh kubeconfig-file
+          #- command: /bin/bash kubectl_script_file.sh kubeconfig-variable
+          - command: /bin/bash kubectl_script_ondemand.sh kubeconfig-variable
     # transform: 'jq( { result: .return[4]."Output" } )'

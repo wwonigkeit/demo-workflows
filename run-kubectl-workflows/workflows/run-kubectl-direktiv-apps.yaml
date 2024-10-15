@@ -15,7 +15,7 @@ states:
   - id: run-kubectl 
     type: action
     action:
-      secrets: ["KUBECONFIG"]                                                     # <--- Stored the config file from K3s as a secret
+      # secrets: ["KUBECONFIG"]                                                     # <--- Stored the config file from K3s as a secret
       function: kubectl
       files:                                                                      # <--- Create a file on the container
       #
@@ -40,9 +40,9 @@ states:
       #
       # OR ...  you can pull script from GitHUb repository
       #
-      - key: /run-kubectl-workflows/data/kubectl_script.sh                               # <--- Location of the file from the GitHUb repository
+      - key: /run-kubectl-workflows/data/kubectl_script.sh                        # <--- Location of the file from the GitHUb repository
         scope: file                                                               # <--- Context of the variable (file in repository)
-        as: kubectl_script_file.sh                                                     # <--- Name of the file on the container file system
+        as: kubectl_script_file.sh                                                # <--- Name of the file on the container file system
       input:
         # kubeconfig: jq(.secrets.KUBECONFIG | @base64)
         commands:
