@@ -3,27 +3,19 @@ direktiv_api: workflow/v1
 description: Run kubectl command with a kubeconfig file stored as a variable
 
 functions:
-  # This is a simple Ansible container from hub.docker.com
-  # - id: kubectl
-  #   image: bitnami/kubectl
-  #   type: knative-workflow
-  #   size: small
-  #   cmd: /usr/share/direktiv/direktiv-cmd
+  # This is the DirektivApps kubectl container from apps.direktiv.io
   - id: kubectl
     image: gcr.io/direktiv/functions/kubectl:1.0
     type: knative-workflow
  
 states:
   #
-  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the local
-  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-ansible.yaml.
-  #
-  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  # Let's only run a single state which executes the kubectl command.
   #
   - id: run-kubectl 
     type: action
     action:
-      secrets: ["KUBECONFIG"]
+      secrets: ["KUBECONFIG"]                                                     # <--- Stored the config file from K3s as a secret
       function: kubectl
       files:                                                                      # <--- Create a file on the container
       #
@@ -44,23 +36,17 @@ states:
       #
       - key: kubectl_script.sh                                                    # <--- Name of the variable
         scope: namespace                                                          # <--- Context of the variable (file in repository)
-        as: kubectl_script.sh                                                     # <--- Name of the file on the container file system
+        as: kubectl_script_variable.sh                                                     # <--- Name of the file on the container file system
+      #
+      # OR ...  you can pull script from GitHUb repository
+      #
+      - key: /run-kubectl-workflows/data/kubectl_script.sh                               # <--- Location of the file from the GitHUb repository
+        scope: file                                                               # <--- Context of the variable (file in repository)
+        as: kubectl_script_file.sh                                                     # <--- Name of the file on the container file system
       input:
-        # files:
-        # - name: kubectl_script.sh
-        #   content: | # (or is this data?)
-        #     #!/bin/bash
-
-        #     echo "Hello World"
-        #   permission: 0755
-        # data:
-        #   commands:
-        #   - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
-        #   - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-        #   - command: ./version.sh
-        #   - command: ./kubectl_script.sh
         commands:
-        - command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
-        - command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
-        #- command: ./kubectl_script.sh
+        #- command: kubectl get nodes --kubeconfig=kubeconfig-file --output json
+        #- command: kubectl get pods --kubeconfig=kubeconfig-variable --output json
+        - command: /bin/bash kubectl_script_variable.sh kubeconfig-file
+        - command: /bin/bash kubectl_script_file.sh kubeconfig-variable
     # transform: 'jq( { result: .return[4]."Output" } )'
