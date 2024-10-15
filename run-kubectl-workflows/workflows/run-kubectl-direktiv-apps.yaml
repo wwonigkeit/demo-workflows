@@ -36,7 +36,7 @@ states:
       #
       - key: kubectl_script.sh                                                    # <--- Name of the variable
         scope: namespace                                                          # <--- Context of the variable (file in repository)
-        as: kubectl_script_variable.sh                                                     # <--- Name of the file on the container file system
+        as: kubectl_script_variable.sh                                            # <--- Name of the file on the container file system
       #
       # OR ...  you can pull script from GitHUb repository
       #
