@@ -1,0 +1,5 @@
+direktiv_api: service/v1
+image: wwonigkeit/ansible:archtis1.0
+size: medium
+scale: 1
+cmd: /usr/share/direktiv/direktiv-cmd

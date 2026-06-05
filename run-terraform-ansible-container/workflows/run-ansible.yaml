@@ -1,38 +1,28 @@
 direktiv_api: workflow/v1
 
-description: Run a Docker Hub Ansible container without any changes
+description: Run the pre-built Ansible container service against a repository playbook
 
 functions:
-  # This is a simple Ansible container from hub.docker.com
   - id: ansible
-    image: alpine:latest
-    type: knative-workflow
-    size: large
-    cmd: /usr/share/direktiv/direktiv-cmd
+    service: /run-terraform-ansible-container/services/ansible.yaml
+    type: knative-namespace
  
 states:
   #
-  # Let's only run a single state which executes the ansible commands. The Ansible playbook is pulled from the local
-  # Direktiv repository run-terraform-ansible-container/scripts/provision-aws-ansible.yaml.
-  #
-  # Note: the Ansible container is built on-demand as there is no existing official Ansible container
+  # Run ansible-playbook against provision-aws-ansible.yaml from the Direktiv repository.
   #
   - id: run-ansible 
     type: action
     action:
       secrets: ["AWS_ACCESS_KEY_ID","AWS_SECRET_ACCESS_KEY"]
       function: ansible
-      files:                                                                      # <--- Create a file on the container
-      - key: /run-terraform-ansible-container/scripts/provision-aws-ansible.yaml  # <--- Location of the file
-        scope: file                                                               # <--- Context of the variable (file in repository)
-        as: provision-aws.yaml                                                    # <--- Name of the file on the container file system
+      files:
+      - key: /run-terraform-ansible-container/scripts/provision-aws-ansible.yaml
+        scope: file
+        as: provision-aws.yaml
       input:
         data:
           commands:
-          - command: apk add --no-cache python3 py3-pip
-          - command: pip3 install boto3 --break-system-packages
-          - command: pip3 install ansible --break-system-packages
-          - command: ansible-galaxy collection install amazon.aws
           - command: ansible-playbook provision-aws.yaml -v --extra-vars "show_custom_stats=true stdout_callback=ansible.posix.json"
             envs: 
             - name: AWS_ACCESS_KEY_ID
@@ -41,4 +31,4 @@ states:
               value: jq(.secrets.AWS_SECRET_ACCESS_KEY)
           # You can also pass the environmental variables as commmand-line arguments
           # - command: ansible-playbook provision-aws.yaml -vvv --extra-vars "aws_access_key=jq(.secrets.AWS_ACCESS_KEY_ID) aws_secret_key=jq(.secrets.AWS_SECRET_ACCESS_KEY) show_custom_stats=true stdout_callback=ansible.posix.json"
-    transform: 'jq( { result: .return[4]."Output" } )'
+    transform: 'jq( { result: .return[0]."Output" } )'
